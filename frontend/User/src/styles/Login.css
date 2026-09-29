@@ -1,0 +1,83 @@
+.login-container {
+  width: 100%;
+}
+
+.login-header {
+  margin-bottom: 36px;
+}
+
+.login-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  font-size: 15px;
+  color: #6b7280;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.forgot-password {
+  font-size: 14px;
+  color: #0f4c3a;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: #1a6b52;
+  text-decoration: underline;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 28px 0;
+  gap: 16px;
+}
+
+.login-divider span {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.login-divider p {
+  font-size: 13px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.register-link p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.register-link a {
+  color: #0f4c3a;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 0.2s ease;
+}
+
+.register-link a:hover {
+  color: #1a6b52;
+  text-decoration: underline;
+}

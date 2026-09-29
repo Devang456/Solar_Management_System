@@ -1,0 +1,9 @@
+.auth-footer {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.auth-footer p {
+  font-size: 13px;
+  color: #9ca3af;
+}

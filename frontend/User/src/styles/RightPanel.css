@@ -1,0 +1,14 @@
+.right-panel {
+  width: 55%;
+  background: #f8fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 40px;
+  overflow-y: auto;
+}
+
+.right-panel-content {
+  width: 100%;
+  max-width: 440px;
+}
