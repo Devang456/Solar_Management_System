@@ -37,7 +37,6 @@ router.post(
 
 router.post(
     "/refresh-token",
-    loginRateLimiter,
     refreshUserToken
 );
 

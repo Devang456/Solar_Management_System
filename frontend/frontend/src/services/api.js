@@ -110,6 +110,7 @@ api.interceptors.response.use(
             } else {
               localStorage.removeItem("accessToken");
               localStorage.removeItem("refreshToken");
+              localStorage.removeItem("solar_user");
               sessionStorage.removeItem("accessToken");
               sessionStorage.removeItem("refreshToken");
               processQueue(new Error("Refresh failed"));
@@ -117,10 +118,16 @@ api.interceptors.response.use(
             }
           })
           .catch((err) => {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            sessionStorage.removeItem("accessToken");
-            sessionStorage.removeItem("refreshToken");
+            const status = err?.response?.status;
+            // Only clear stored tokens if the server explicitly confirmed the refresh token is invalid/expired (401/403).
+            // Do NOT wipe tokens on transient errors (Cold Start, 502/503/504 Bad Gateway, Network Error, 429 rate limit).
+            if (status === 401 || status === 403) {
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("refreshToken");
+              localStorage.removeItem("solar_user");
+              sessionStorage.removeItem("accessToken");
+              sessionStorage.removeItem("refreshToken");
+            }
             processQueue(err);
             reject(error);
           })

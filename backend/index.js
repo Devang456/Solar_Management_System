@@ -293,6 +293,7 @@ app.use(notFoundMiddleware);
 app.use(errorMiddleware);
 
 import seedDepartments from "./src/seeders/department.seeder.js";
+import seedRoles from "./src/seeders/role.seeder.js";
 
 // Connect Database then Start Server
 const startServer = async () => {
@@ -302,6 +303,11 @@ const startServer = async () => {
             await seedDepartments();
         } catch (err) {
             logger.warn("Database seeder failed:", err.message);
+        }
+        try {
+            await seedRoles();
+        } catch (err) {
+            logger.warn("RBAC role seeder failed:", err.message);
         }
     }
 

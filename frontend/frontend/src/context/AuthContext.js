@@ -15,12 +15,23 @@ import {
 
 import { authAPI } from "../services/api";
 
-// How often the session re-checks its permissions against the DATABASE. The
-// browser `storage` event only fires across tabs of the SAME profile — a user
-// logged in inside an incognito window (or another browser) never receives it.
-// The backend is the only shared source of truth there, so this poll bridges
-// that gap and redirects to Access Denied as soon as access is revoked.
-const PERMISSIONS_POLL_INTERVAL_MS = 10000;
+// How often the session re-checks its permissions against the DATABASE.
+// 2 minutes is ideal to avoid overloading free-tier backends (e.g. Render)
+// while keeping permissions relatively fresh.
+const PERMISSIONS_POLL_INTERVAL_MS = 120000;
+const STORAGE_USER_KEY = "solar_user";
+
+// True when at least one module grants at least one action. Used to detect an
+// empty/deactivated matrix so it can never revoke Super Admin's core access.
+const hasGrantedAction = (matrix) =>
+  !!matrix &&
+  typeof matrix === "object" &&
+  Object.values(matrix).some(
+    (actions) =>
+      actions &&
+      typeof actions === "object" &&
+      Object.values(actions).some(Boolean)
+  );
 
 const buildUser = (data = {}) => {
   const userRole = data.role || ROLES.SUPER_ADMIN;
@@ -35,10 +46,19 @@ const buildUser = (data = {}) => {
   // stored matrix.
   if (data.permissions && typeof data.permissions === "object" && !Array.isArray(data.permissions)) {
     try {
-      const stored = getStoredRolePermissions();
-      stored[userRole] = data.permissions;
-      // Super Admin core access can never be lost
-      if (!stored[ROLES.SUPER_ADMIN]) {
+      // Clone so persisting a server matrix never mutates the shared defaults
+      // object returned by getStoredRolePermissions().
+      const stored = { ...getStoredRolePermissions() };
+      const incoming = data.permissions;
+      // A missing/empty role matrix (e.g. the roles collection was never
+      // seeded) must not lock Super Admin out of the app.
+      if (userRole === ROLES.SUPER_ADMIN && !hasGrantedAction(incoming)) {
+        stored[ROLES.SUPER_ADMIN] = DEFAULT_ROLE_PERMISSIONS[ROLES.SUPER_ADMIN];
+      } else {
+        stored[userRole] = incoming;
+      }
+      // Super Admin core access can never be lost.
+      if (!hasGrantedAction(stored[ROLES.SUPER_ADMIN])) {
         stored[ROLES.SUPER_ADMIN] = DEFAULT_ROLE_PERMISSIONS[ROLES.SUPER_ADMIN];
       }
       setStoredRolePermissions(stored);
@@ -67,8 +87,24 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [permissionsReady, setPermissionsReady] = useState(false);
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = typeof window !== "undefined" ? localStorage.getItem(STORAGE_USER_KEY) : null;
+      if (stored) {
+        return buildUser(JSON.parse(stored));
+      }
+    } catch {}
+    return null;
+  });
+  const [permissionsReady, setPermissionsReady] = useState(() => {
+    // If a cached user session and token already exist, start as ready to prevent login redirects
+    if (typeof window !== "undefined") {
+      const hasToken = !!(localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"));
+      const hasStoredUser = !!localStorage.getItem(STORAGE_USER_KEY);
+      return hasToken && hasStoredUser;
+    }
+    return false;
+  });
 
   // Rebuild the current user from the STORED roles list + permission matrix.
   const refreshUserFromStoredPermissions = useCallback(() => {
@@ -125,6 +161,9 @@ export const AuthProvider = ({ children }) => {
       const res = await authAPI.getProfile();
       if (res.data?.success && res.data?.user) {
         const refreshed = buildUser(res.data.user);
+        try {
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(refreshed));
+        } catch {}
         setUser((prevUser) => {
           if (!prevUser) return refreshed;
           const sameRole = refreshed.role === prevUser.role;
@@ -139,6 +178,7 @@ export const AuthProvider = ({ children }) => {
       if (err.response?.status === 401) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem(STORAGE_USER_KEY);
         sessionStorage.removeItem("accessToken");
         sessionStorage.removeItem("refreshToken");
         setUser(null);
@@ -211,7 +251,6 @@ export const AuthProvider = ({ children }) => {
   // always reflects the role's CURRENT permissions.
   useEffect(() => {
     let cancelled = false;
-    let fallbackTimer = null;
 
     const pathname = typeof window !== "undefined" ? (window.location.pathname || "").toLowerCase() : "";
     const isPublicPage =
@@ -224,15 +263,18 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
+    const token = typeof window !== "undefined" && (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"));
+    if (!token) {
+      setPermissionsReady(true);
+      return;
+    }
+
     (async () => {
-      setPermissionsReady(false);
-      fallbackTimer = setTimeout(() => setPermissionsReady(true), 2500);
       await syncPermissionsFromServer();
       if (!cancelled) setPermissionsReady(true);
     })();
     return () => {
       cancelled = true;
-      if (fallbackTimer) clearTimeout(fallbackTimer);
     };
   }, [syncPermissionsFromServer]);
 
@@ -250,6 +292,9 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem("refreshToken", data.refreshToken);
         }
         const userData = buildUser(data.user);
+        try {
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
+        } catch {}
         setUser(userData);
         setPermissionsReady(true);
         return { success: true, message: data.message, user: userData };
@@ -275,6 +320,7 @@ export const AuthProvider = ({ children }) => {
     try {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem(STORAGE_USER_KEY);
       sessionStorage.clear();
     } catch {}
 
@@ -287,7 +333,11 @@ export const AuthProvider = ({ children }) => {
   const updateUser = (updates = {}) => {
     setUser((prevUser) => {
       if (!prevUser) return prevUser;
-      return buildUser({ ...prevUser, ...updates });
+      const updated = buildUser({ ...prevUser, ...updates });
+      try {
+        localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(updated));
+      } catch {}
+      return updated;
     });
   };
 
