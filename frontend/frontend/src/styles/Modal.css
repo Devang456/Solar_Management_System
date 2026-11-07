@@ -149,3 +149,47 @@
   background: #f3f4f6;
   color: #6b7280;
 }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .cm-overlay {
+    padding: 10px;
+  }
+  .cm-view-modal {
+    max-height: 94vh;
+    border-radius: 12px;
+  }
+  .cm-view-modal-header {
+    padding: 16px 18px 12px;
+  }
+  .cm-view-modal-title h3 {
+    font-size: 17px;
+  }
+  .cm-view-modal-body {
+    padding: 16px 18px;
+    gap: 16px;
+  }
+  .cm-view-modal-footer {
+    padding: 12px 18px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cm-overlay {
+    padding: 6px;
+  }
+  .cm-view-modal-header {
+    padding: 12px 14px 10px;
+  }
+  .cm-view-modal-body {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .cm-view-modal-footer {
+    padding: 10px 14px 14px;
+    flex-direction: column-reverse;
+  }
+  .cm-view-modal-footer button {
+    width: 100% !important;
+  }
+}

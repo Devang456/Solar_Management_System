@@ -455,6 +455,7 @@
 
 .ts-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .ts-table {
   width: 100%;
@@ -1042,7 +1043,10 @@
 }
 
 @media (max-width: 960px) {
-  .ts-stats {
+  .ts-stats,
+  .ticket-module .ts-stats,
+  .ticket-module .ticket-stats,
+  .ticket-module .ticket-stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .ts-form-grid,
@@ -1050,12 +1054,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .ts-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .product-pagination-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 @media (max-width: 640px) {
   .ticket-module {
     padding: 18px;
-  }
-  .ts-stats {
-    grid-template-columns: 1fr;
   }
   .ts-toolbar {
     flex-direction: column;
@@ -1067,6 +1083,66 @@
   }
   .ts-search-wrap {
     max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticket-module {
+    padding: 12px;
+  }
+  .ts-stats,
+  .ticket-module .ts-stats,
+  .ticket-module .ticket-stats,
+  .ticket-module .ticket-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .ts-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+  .ts-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .ts-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .ts-stat-value {
+    font-size: 16px;
+  }
+  .ts-stat-label {
+    font-size: 9px;
+  }
+  .ts-title {
+    font-size: 20px;
+  }
+  .ts-comment-form__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .ts-modal__footer {
+    flex-direction: column;
+    width: 100%;
+  }
+  .ts-modal__footer .ts-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .ts-stats,
+  .ticket-module .ts-stats,
+  .ticket-module .ticket-stats,
+  .ticket-module .ticket-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .ts-title {
+    font-size: 18px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

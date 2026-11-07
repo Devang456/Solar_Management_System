@@ -105,6 +105,12 @@ const Login = () => {
           <Button type="submit" fullWidth loading={loading}>
             Sign In
           </Button>
+
+          <div style={{ marginTop: "18px", textAlign: "center" }}>
+            <Link to="/" style={{ color: "#5c6f68", fontSize: "0.84rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              <span>← Back to SolarOps Homepage</span>
+            </Link>
+          </div>
         </form>
 
       </div>

@@ -2,6 +2,14 @@
 
 .td-page {
   max-width: 1080px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .td-profile-card {
+    padding: 12px;
+  }
 }
 
 /* Back button — top-left above the header */

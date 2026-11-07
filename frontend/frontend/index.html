@@ -7,32 +7,67 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Solar Management System</title>
+    <title>SolarOps - Enterprise Solar Management &amp; IoT Energy Platform</title>
+    <meta name="description" content="A modern solar management SaaS platform designed to monitor solar energy production, track performance, manage installations, and visualize energy insights through an intuitive dashboard." />
+    <meta name="keywords" content="solar management, solar ERP, IoT solar monitoring, renewable energy software, solar CAD, photovoltaic management" />
+    <meta property="og:title" content="SolarOps - Enterprise Solar Management &amp; IoT Energy Platform" />
+    <meta property="og:description" content="Commercial solar operations SaaS: Real-time IoT inverter telemetry, rooftop CAD sizing, dynamic quotation engine, field technician dispatch, and 28 integrated modules." />
+    <meta property="og:type" content="website" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.js"></script>
     <style>
-      html, body, #root {
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      html {
         margin: 0;
         padding: 0;
-        height: 100%;
-        overflow: hidden;
+        width: 100%;
+        min-height: 100%;
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        overflow-x: hidden;
+        font-family: var(--app-font-family);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #f4f7f5;
+        color: #12241f;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      #root {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
       :root {
         --app-font-family: "Poppins", "Segoe UI", sans-serif;
       }
 
-      body {
-        font-family: var(--app-font-family);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-
       button, input, select, textarea {
         font-family: inherit;
+        box-sizing: border-box;
+      }
+
+      img, video {
+        max-width: 100%;
+        height: auto;
       }
     </style>
   </body>

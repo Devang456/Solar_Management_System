@@ -1021,6 +1021,7 @@
 
 .perm-group__body {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .perm-row {
@@ -1028,6 +1029,7 @@
   grid-template-columns: 1.5fr 0.8fr repeat(5, 0.9fr);
   align-items: center;
   border-top: 1px solid var(--rp-surface-sunken);
+  min-width: 640px;
 }
 
 .perm-row--head {
@@ -1151,12 +1153,70 @@
 /* ============================== RESPONSIVE ================================ */
 
 @media (max-width: 900px) {
-  .rp-module .form-grid { grid-template-columns: 1fr; }
+  .rp-module .form-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 768px) {
+  .rp-header {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+
+  .rp-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .rp-search {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .rp-module .rp-status-filter {
+    width: 100% !important;
+  }
+
+  .rp-module .rp-status-filter .cdropdown {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .rp-pagination-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
 }
 
 @media (max-width: 640px) {
-  .rp-module { padding: 16px; }
-  .rp-header { flex-direction: column; gap: 12px; }
+  .rp-module { padding: 12px; }
+}
+
+@media (max-width: 480px) {
+  .rp-module .lm-view-modal-header,
+  .rp-module .lm-modal-header {
+    padding: 12px 14px !important;
+  }
+
+  .rp-module .lm-view-modal-body,
+  .rp-module .lm-modal form {
+    padding: 12px 14px !important;
+  }
+
+  .rp-module .lm-view-modal-footer,
+  .rp-module .lm-modal-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 10px 14px 14px !important;
+  }
+
+  .rp-module .lm-view-modal-footer button,
+  .rp-module .lm-modal-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
 }
 
 /* ──────────────────────── Role Status Toggle Switch (compact, lives in the Action column) ──────────────────────── */

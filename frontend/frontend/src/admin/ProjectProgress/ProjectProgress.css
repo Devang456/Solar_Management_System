@@ -295,6 +295,7 @@
 
 .pp-table-scroll {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .pp-table {
@@ -1531,6 +1532,20 @@
     padding: 0;
     gap: 14px;
   }
+  .pp-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .pp-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .pp-header-actions button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
   .pp-stats {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -1589,21 +1604,63 @@
   .pp-health-selector {
     flex-direction: column;
   }
+  .pp-pagination-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 480px) {
   .pp-stats {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
   .pp-stat-card {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+  .pp-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .pp-stat-icon svg {
+    width: 16px;
+    height: 16px;
   }
   .pp-stat-value {
-    font-size: 17px;
+    font-size: 16px;
+  }
+  .pp-stat-label {
+    font-size: 9px;
+  }
+  .pp-title {
+    font-size: 20px;
+  }
+  .pp-charts .chart-card {
+    padding: 14px;
+  }
+  .pp-form-page-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+  .pp-form-page-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .pp-stats {
+    grid-template-columns: 1fr;
+  }
+  .pp-title {
+    font-size: 18px;
   }
   .pp-view-quick {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 /* Budget bar - blue, tracks the Approved Budget */

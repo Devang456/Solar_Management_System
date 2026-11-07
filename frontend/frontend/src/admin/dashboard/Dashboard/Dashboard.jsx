@@ -748,6 +748,7 @@ const Dashboard = () => {
   const activeItem = section || "dashboard";
   const sidebarActiveItem = activeItem && activeItem.endsWith("-activity") ? activeItem.replace("-activity", "") : activeItem;
   const { user, canDo } = useAuth();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Data states for dynamic reactivity (fetched strictly from the backend).
   const [leads, setLeads] = useState([]);
@@ -815,6 +816,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setMobileSidebarOpen(false);
     const contentEl = document.querySelector(".dashboard-content");
     if (contentEl) {
       contentEl.scrollTop = 0;
@@ -823,6 +825,7 @@ const Dashboard = () => {
 
   const handleNavigate = (item) => {
     window.scrollTo(0, 0);
+    setMobileSidebarOpen(false);
     document.body.style.overflow = "";
     const contentEl = document.querySelector(".dashboard-content");
     if (contentEl) {
@@ -1412,12 +1415,18 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar activeItem={sidebarActiveItem} onNavigate={handleNavigate} />
+      <Sidebar
+        activeItem={sidebarActiveItem}
+        onNavigate={handleNavigate}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
+      />
 
       <div className="dashboard-main">
         <Header
           onNotificationClick={() => handleNavigate("alerts")}
           hideNotifications={!hasAnyAccess(user?.permissions)}
+          onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
         />
 
         <div className="dashboard-content">

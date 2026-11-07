@@ -403,8 +403,15 @@
 
 /* ── Prevent table data from breaking onto multiple lines ── */
 
+.lm-table-wrapper {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-width: 100% !important;
+}
+
 .lm-table-wrapper table {
   width: 100% !important;
+  min-width: 820px !important;
   border-collapse: collapse !important;
 }
 
@@ -427,5 +434,55 @@
 
 .lm-type-pill {
   white-space: nowrap !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .lm-modal-actions {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .lm-search {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+  .lm-filter-selects {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lm-filter-selects select,
+  .lm-filter-selects .common-dropdown,
+  .lm-filter-date-inline {
+    width: 100%;
+  }
+  .lm-modal-actions {
+    flex-direction: column-reverse;
+  }
+  .lm-cancel-btn,
+  .lm-btn-secondary,
+  .lm-save-btn,
+  .lm-submit-btn,
+  .lm-btn-primary {
+    width: 100% !important;
+    text-align: center;
+  }
+  .lm-link-toggle {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .lm-filters {
+    gap: 8px;
+  }
+  .lm-reset-filters-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 

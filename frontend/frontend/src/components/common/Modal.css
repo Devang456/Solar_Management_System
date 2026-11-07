@@ -96,3 +96,40 @@
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+@media (max-width: 640px) {
+  .common-modal-overlay {
+    padding: 0.5rem;
+  }
+  .common-modal-container {
+    border-radius: 12px;
+    max-height: 94vh;
+  }
+  .common-modal-header {
+    padding: 1rem 1.25rem;
+  }
+  .common-modal-body {
+    padding: 1.25rem 1rem;
+  }
+  .common-modal-footer {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .common-modal-overlay {
+    padding: 4px;
+  }
+  .common-modal-title {
+    font-size: 1rem;
+  }
+  .common-modal-footer {
+    flex-direction: column-reverse;
+  }
+  .common-modal-footer > button,
+  .common-modal-footer > * {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}

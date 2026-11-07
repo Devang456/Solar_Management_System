@@ -25,6 +25,7 @@
   bottom: 0;
   z-index: 9600;
   width: 280px;
+  max-width: 88vw;
   background: #ffffff;
   box-shadow: -8px 0 30px rgba(0, 0, 0, 0.12);
   display: flex;

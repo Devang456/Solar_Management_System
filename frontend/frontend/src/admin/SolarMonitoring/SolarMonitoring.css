@@ -493,26 +493,110 @@
 
   .efficiency-summary {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eff-details {
+    width: 100%;
   }
 
   .co2-summary {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .co2-big-number {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .co2-equivalents {
+    width: 100%;
   }
 
   .chart-stats-row {
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .production-tabs {
     flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px;
   }
 
   .live-banner {
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .monitoring-page {
+    gap: 14px;
+  }
+
+  .monitoring-card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .monitoring-card .card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .metric-card {
+    padding: 12px 14px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+
+  .chart-stat-value {
+    font-size: 16px;
+  }
+
+  .co2-value {
+    font-size: 24px;
+  }
+
+  .eff-circle {
+    width: 90px;
+    height: 90px;
+  }
+
+  .eff-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .monitoring-card {
+    padding: 12px 10px;
+  }
+
+  .chart-stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-btn {
+    padding: 5px 6px;
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 16px;
   }
 }

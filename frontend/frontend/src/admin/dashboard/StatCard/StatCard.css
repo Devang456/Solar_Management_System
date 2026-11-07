@@ -508,6 +508,40 @@
 .stat-up   { color: #10b981 !important; }
 .stat-down { color: #ef4444 !important; }
 
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    min-height: 70px !important;
+    border-radius: 10px !important;
+  }
+  .stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+  }
+  .stat-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+  .stat-value {
+    font-size: 18px !important;
+  }
+  .stat-title {
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .stat-card {
+    padding: 8px 10px !important;
+    gap: 8px !important;
+  }
+  .stat-value {
+    font-size: 16px !important;
+  }
+}
+
 /* Skeleton loading animation */
 .stat-skeleton {
   width: 76px;

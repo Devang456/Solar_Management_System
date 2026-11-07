@@ -208,10 +208,12 @@
 
 .pa-table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .pa-table {
     width: 100%;
+    min-width: 760px;
     border-collapse: collapse;
     font-size: 13px;
 }
@@ -664,5 +666,54 @@
 @media (max-width: 480px) {
     .pa-stats {
         grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .pa-stat-card {
+        padding: 10px 12px;
+        min-height: 68px;
+    }
+
+    .pa-stat-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+    }
+
+    .pa-stat-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .pa-stat-value {
+        font-size: 16px;
+    }
+
+    .pa-stat-label {
+        font-size: 9px;
+    }
+
+    .pa-title {
+        font-size: 20px;
+    }
+
+    .pa-modal-footer {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .pa-modal-footer .pa-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .pa-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .pa-title {
+        font-size: 18px;
     }
 }

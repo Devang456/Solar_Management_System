@@ -160,3 +160,21 @@
     transform: rotate(360deg);
   }
 }
+
+@media (max-width: 480px) {
+  .solar-map-search {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .solar-map-search-input-wrap {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+  .solar-map-search-input-wrap input {
+    max-width: 100%;
+  }
+  .solar-map-search button {
+    flex: 1;
+    min-width: 0;
+  }
+}

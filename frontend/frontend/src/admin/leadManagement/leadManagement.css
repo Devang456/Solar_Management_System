@@ -1540,4 +1540,115 @@
   box-shadow: 0 2px 8px rgba(44, 83, 100, 0.3);
 }
 
+/* ==========================================================================
+   Comprehensive Responsive Styles for Lead Management
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .lm-form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lm-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .lm-header-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .lm-quick-stats {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .lm-filters {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .lm-search {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .lm-filter-selects {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
+
+  .lm-filter-selects select {
+    flex: 1 1 130px !important;
+  }
+
+  .lm-form-grid {
+    grid-template-columns: 1fr !important;
+    padding: 16px 18px !important;
+    gap: 10px !important;
+  }
+
+  .lm-form-grid .full-width {
+    grid-column: 1 !important;
+  }
+
+  .lm-view-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lm-pagination-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .lm-modal-actions,
+  .lm-view-modal-footer {
+    padding: 12px 18px 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .lm-modal-header,
+  .lm-view-modal-header {
+    padding: 14px 16px !important;
+  }
+
+  .lm-form-grid,
+  .lm-view-modal-body {
+    padding: 12px 14px !important;
+  }
+
+  .lm-modal-actions,
+  .lm-view-modal-footer,
+  .lm-reason-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 12px 14px 14px !important;
+  }
+
+  .lm-modal-actions button,
+  .lm-view-modal-footer button,
+  .lm-reason-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .lm-reason-modal {
+    padding: 20px 16px 16px !important;
+  }
+
+  .lm-reason-actions {
+    margin-top: 14px !important;
+  }
+}
+
 

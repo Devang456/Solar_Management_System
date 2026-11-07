@@ -1,4 +1,4 @@
-﻿.login-card {
+.login-card {
   width: 100%;
   max-width: 420px;
   background: #ffffff;
@@ -144,5 +144,43 @@
 @media (max-width: 900px) {
   .login-card {
     padding: 36px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 24px 18px;
+    border-radius: 12px;
+  }
+
+  .login-card .card-header {
+    margin-bottom: 22px;
+  }
+
+  .login-card .card-header h2 {
+    font-size: 22px;
+  }
+
+  .form-options {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .demo-item {
+    padding: 6px 10px;
+  }
+
+  .demo-email {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .login-card {
+    padding: 20px 14px;
+  }
+
+  .login-card .card-header h2 {
+    font-size: 20px;
   }
 }

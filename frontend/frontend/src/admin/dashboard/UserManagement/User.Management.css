@@ -1749,11 +1749,15 @@
 
 @media (max-width: 640px) {
   .usr-module {
-    padding: 18px;
+    padding: 14px;
   }
   .usr-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .usr-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
   }
   .usr-stats {
     grid-template-columns: 1fr 1fr;
@@ -1772,6 +1776,29 @@
   .activity-card__top {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .usr-module {
+    padding: 10px 8px;
+  }
+  .usr-stats {
+    grid-template-columns: 1fr;
+  }
+  .usr-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .user-modal-actions,
+  .usr-module .modal__footer {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .user-modal-actions button,
+  .usr-module .modal__footer button {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 

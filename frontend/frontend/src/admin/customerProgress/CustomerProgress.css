@@ -258,6 +258,8 @@
 /* ── Tables ── */
 .cp-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   scrollbar-width: thin !important;
   scrollbar-color: #d1d5db transparent !important;
 }
@@ -274,6 +276,7 @@
 
 .cp-table {
   width: 100%;
+  min-width: 720px;
   border-collapse: collapse;
 }
 
@@ -331,6 +334,8 @@
   align-items: flex-start;
   padding: 22px 18px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   scrollbar-width: thin;
 }
 
@@ -630,7 +635,98 @@
   .cp-profile-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+@media (max-width: 768px) {
+  .cp-profile-card {
+    padding: 16px 14px;
+  }
+  .cp-profile-top {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cp-survey-btn {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+    order: 3;
+  }
+  .cp-section-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cp-section-sub {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .cp-profile-grid { grid-template-columns: 1fr; }
   .cp-progress-top { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .cp-header-title h2 {
+    font-size: 18px;
+  }
+  .cp-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+  .cp-profile-name h3 {
+    font-size: 16px;
+  }
+  .cp-profile-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .cp-profile-item {
+    padding: 8px 10px;
+  }
+  .cp-progress-list {
+    padding: 12px;
+  }
+  .cp-progress-card {
+    padding: 12px;
+  }
+  .cp-progress-bar-row {
+    gap: 8px;
+  }
+  .cp-progress-pct {
+    font-size: 12px;
+    min-width: 36px;
+  }
+  .cp-progress-dates {
+    font-size: 11px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cp-container {
+    gap: 12px;
+  }
+  .cp-profile-card {
+    padding: 12px 10px;
+  }
+  .cp-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+  .cp-profile-name h3 {
+    font-size: 15px;
+  }
+  .cp-header-title h2 {
+    font-size: 16px;
+  }
+  .cp-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+  .cp-milestone {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
 }

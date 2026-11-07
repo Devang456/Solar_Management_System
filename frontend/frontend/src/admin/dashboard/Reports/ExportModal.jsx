@@ -325,7 +325,7 @@ export default function ExportModal({
         </div>
 
         {/* ── Footer ── */}
-        <div style={{
+        <div className="em-footer" style={{
           padding: "14px 24px 20px",
           borderTop: "1px solid #f0f0f0",
           display: "flex",
@@ -405,6 +405,15 @@ export default function ExportModal({
         @keyframes em-spin {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
+        }
+        @media (max-width: 480px) {
+          .em-footer {
+            flex-direction: column-reverse !important;
+          }
+          .em-footer button {
+            width: 100% !important;
+            justify-content: center !important;
+          }
         }
       `}</style>
     </div>

@@ -577,3 +577,35 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 480px) {
+  .pf-profile-row {
+    padding: 0 14px 16px;
+    margin-top: -30px;
+  }
+  .pf-avatar-lg {
+    width: 64px;
+    height: 64px;
+    font-size: 22px;
+  }
+  .pf-card {
+    padding: 16px 14px !important;
+  }
+  .pf-profile-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .pf-profile-actions button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .pf-profile-row {
+    padding: 0 10px 14px;
+  }
+  .pf-card {
+    padding: 14px 10px !important;
+  }
+}

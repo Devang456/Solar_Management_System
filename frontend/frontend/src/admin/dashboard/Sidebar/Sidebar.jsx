@@ -363,9 +363,14 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const Sidebar = ({ activeItem, onNavigate }) => {
+const Sidebar = ({ activeItem, onNavigate, mobileOpen = false, onCloseMobile }) => {
   const { user, logout } = useAuth();
   const { success } = useToast();
+
+  const handleNav = (id) => {
+    if (onCloseMobile) onCloseMobile();
+    onNavigate(id);
+  };
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [flyoutGroupId, setFlyoutGroupId] = useState(null);
@@ -601,152 +606,173 @@ const Sidebar = ({ activeItem, onNavigate }) => {
   };
 
   return (
-    <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`} style={{ fontFamily: 'var(--app-font-family)' }}>
-      {/* BRAND HEADER */}
-      <div className="sidebar-brand">
-        {isCollapsed ? (
-          <div className="sidebar-compact-logo" title="Solar Management System">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffb81c" strokeWidth="2.2">
-              <circle cx="12" cy="12" r="5" />
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+    <>
+      {mobileOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={onCloseMobile}
+          aria-hidden="true"
+        />
+      )}
+      <aside className={`sidebar ${isCollapsed ? "collapsed" : ""} ${mobileOpen ? "mobile-open" : ""}`} style={{ fontFamily: 'var(--app-font-family)' }}>
+        {/* BRAND HEADER */}
+        <div className="sidebar-brand">
+          {isCollapsed ? (
+            <div className="sidebar-compact-logo" title="Solar Management System">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffb81c" strokeWidth="2.2">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            </div>
+          ) : (
+            <img src={solarLogo} alt="Solar Management System" className="sidebar-brand-logo" />
+          )}
+          <button
+            type="button"
+            className="sidebar-mobile-close-btn"
+            onClick={onCloseMobile}
+            aria-label="Close sidebar menu"
+            title="Close menu"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-          </div>
-        ) : (
-          <img src={solarLogo} alt="Solar Management System" className="sidebar-brand-logo" />
-        )}
-      </div>
+          </button>
+        </div>
 
-      {/* NAV LINKS (SCROLLABLE MIDDLE CONTAINER) */}
-      <nav className="sidebar-nav">
-        {isCollapsed ? (
-          /* COLLAPSED MODE: STANDALONE FLAT STREAM OF ALL SUB-MODULE ICONS */
-          <div className="sidebar-collapsed-stream">
-            {showDashboard && (
-              <button
-                type="button"
-                className={`sidebar-link ${activeItem === "dashboard" ? "active" : ""}`}
-                onClick={() => onNavigate("dashboard")}
-                title={dashboardItem.label}
-              >
-                {dashboardItem.icon}
-              </button>
-            )}
-            {menuGroups.flatMap((group) =>
-              group.children.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`sidebar-link ${activeItem === item.id ? "active" : ""}`}
-                  onClick={() => onNavigate(item.id)}
-                  title={item.label}
-                >
-                  <SubIcon id={item.id} />
-                </button>
-              ))
-            )}
-          </div>
-        ) : (
-          /* EXPANDED MODE: ACCORDION GROUPS WITH DROPDOWN SUB-MENUS */
-            <>
-            {showDashboard && (
-              <div className="sidebar-group open">
+        {/* NAV LINKS (SCROLLABLE MIDDLE CONTAINER) */}
+        <nav className="sidebar-nav">
+          {isCollapsed ? (
+            /* COLLAPSED MODE: STANDALONE FLAT STREAM OF ALL SUB-MODULE ICONS */
+            <div className="sidebar-collapsed-stream">
+              {showDashboard && (
                 <button
                   type="button"
-                  className={`sidebar-top-link ${activeItem === "dashboard" ? "active" : ""}`}
-                  onClick={() => onNavigate("dashboard")}
+                  className={`sidebar-link ${activeItem === "dashboard" ? "active" : ""}`}
+                  onClick={() => handleNav("dashboard")}
+                  title={dashboardItem.label}
                 >
-                  <span className="sidebar-group-header-left">
-                    {dashboardItem.icon}
-                    <span>{dashboardItem.label}</span>
-                  </span>
+                  {dashboardItem.icon}
                 </button>
-              </div>
-            )}
-
-            {menuGroups.map((group) => {
-              const isOpen = openGroups.has(group.id);
-              const isGroupActive = group.children.some((child) => child.id === activeItem);
-
-              return (
-                <div key={group.id} className={`sidebar-group ${isOpen ? "open" : ""}`}>
+              )}
+              {menuGroups.flatMap((group) =>
+                group.children.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`sidebar-link ${activeItem === item.id ? "active" : ""}`}
+                    onClick={() => handleNav(item.id)}
+                    title={item.label}
+                  >
+                    <SubIcon id={item.id} />
+                  </button>
+                ))
+              )}
+            </div>
+          ) : (
+            /* EXPANDED MODE: ACCORDION GROUPS WITH DROPDOWN SUB-MENUS */
+              <>
+              {showDashboard && (
+                <div className="sidebar-group open">
                   <button
                     type="button"
-                    className={`sidebar-group-header ${isGroupActive ? "active" : ""}`}
-                    onClick={() => toggleGroup(group.id)}
-                    aria-expanded={isOpen}
+                    className={`sidebar-top-link ${activeItem === "dashboard" ? "active" : ""}`}
+                    onClick={() => handleNav("dashboard")}
                   >
                     <span className="sidebar-group-header-left">
-                      {group.icon}
-                      <span>{group.label}</span>
+                      {dashboardItem.icon}
+                      <span>{dashboardItem.label}</span>
                     </span>
-                    <ChevronIcon />
                   </button>
-
-                  <div
-                    className="sidebar-submenu"
-                    style={{
-                      maxHeight: isOpen ? `${group.children.length * 48 + 20}px` : "0px",
-                      opacity: isOpen ? 1 : 0,
-                      transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease",
-                    }}
-                  >
-                    <ul>
-                      {group.children.map((item) => (
-                        <li key={item.id}>
-                          <button
-                            type="button"
-                            className={`sidebar-link ${activeItem === item.id ? "active" : ""}`}
-                            onClick={() => onNavigate(item.id)}
-                          >
-                            <SubIcon id={item.id} />
-                            <span>{item.label}</span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
-              );
-            })}
-          </>
-        )}
-      </nav>
+              )}
 
-      {/* BOTTOM CONTROLS (LOGOUT + COLLAPSE TOGGLE) */}
-      <div className="sidebar-bottom">
-        <button
-          className="sidebar-bottom-btn sidebar-logout"
-          onClick={() => { logout(); success("Logged out successfully."); }}
-          title={isCollapsed ? "Logout" : undefined}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-          {!isCollapsed && <span>Logout</span>}
-        </button>
+              {menuGroups.map((group) => {
+                const isOpen = openGroups.has(group.id);
+                const isGroupActive = group.children.some((child) => child.id === activeItem);
 
-        <button
-          type="button"
-          className="sidebar-bottom-toggle-btn"
-          onClick={toggleCollapse}
-          title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            style={{ transform: isCollapsed ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease" }}
+                return (
+                  <div key={group.id} className={`sidebar-group ${isOpen ? "open" : ""}`}>
+                    <button
+                      type="button"
+                      className={`sidebar-group-header ${isGroupActive ? "active" : ""}`}
+                      onClick={() => toggleGroup(group.id)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="sidebar-group-header-left">
+                        {group.icon}
+                        <span>{group.label}</span>
+                      </span>
+                      <ChevronIcon />
+                    </button>
+
+                    <div
+                      className="sidebar-submenu"
+                      style={{
+                        maxHeight: isOpen ? `${group.children.length * 48 + 20}px` : "0px",
+                        opacity: isOpen ? 1 : 0,
+                        transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease",
+                      }}
+                    >
+                      <ul>
+                        {group.children.map((item) => (
+                          <li key={item.id}>
+                            <button
+                              type="button"
+                              className={`sidebar-link ${activeItem === item.id ? "active" : ""}`}
+                              onClick={() => handleNav(item.id)}
+                            >
+                              <SubIcon id={item.id} />
+                              <span>{item.label}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </nav>
+
+        {/* BOTTOM CONTROLS (LOGOUT + COLLAPSE TOGGLE) */}
+        <div className="sidebar-bottom">
+          <button
+            className="sidebar-bottom-btn sidebar-logout"
+            onClick={() => { logout(); success("Logged out successfully."); }}
+            title={isCollapsed ? "Logout" : undefined}
           >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-      </div>
-    </aside>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            {!isCollapsed && <span>Logout</span>}
+          </button>
+
+          <button
+            type="button"
+            className="sidebar-bottom-toggle-btn"
+            onClick={toggleCollapse}
+            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              style={{ transform: isCollapsed ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease" }}
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 };
 

@@ -2317,6 +2317,12 @@
   gap: 20px;
 }
 
+@media (max-width: 1024px) {
+  .ss-charts-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .ss-chart-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;

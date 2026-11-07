@@ -100,6 +100,8 @@
   border-radius: 14px;
   padding: 6px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   box-shadow: 0 1px 6px rgba(0,0,0,.05);
 }
 
@@ -1488,8 +1490,20 @@
 }
 
 @media (max-width: 768px) {
+  .vendor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .vendor-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
   .vendor-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .vendor-tabs {
@@ -1568,6 +1582,85 @@
 
   .vendor-card-header {
     align-items: center;
+  }
+
+  .product-pagination-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .vendor-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .vendor-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+
+  .vendor-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .vendor-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .vendor-stat-value {
+    font-size: 16px;
+  }
+
+  .vendor-stat-label {
+    font-size: 9px;
+  }
+
+  .vendor-header-title {
+    font-size: 20px;
+  }
+
+  .vendor-card {
+    padding: 14px;
+  }
+
+  .vendor-card-actions {
+    flex-wrap: wrap;
+  }
+
+  .vendor-card-actions button {
+    flex: 1;
+  }
+
+  .po-card-dates {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .vendor-modal-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .vendor-modal-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .vendor-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .vendor-header-title {
+    font-size: 18px;
   }
 }
 

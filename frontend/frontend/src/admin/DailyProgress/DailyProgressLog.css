@@ -473,13 +473,14 @@
 
 .dp-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dp-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  min-width: 640px;
+  min-width: 800px;
 }
 
 .dp-table thead th {
@@ -1129,8 +1130,26 @@
 }
 
 @media(max-width: 768px) {
+  .dp-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dp-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .dp-header-actions button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
   .dp-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .dp-toolbar {
@@ -1138,7 +1157,7 @@
     align-items: stretch;
   }
   .dp-toolbar .dp-btn-primary { width: 100%; }
-  .dp-search { max-width: none; }
+  .dp-search { max-width: none; width: 100%; }
 
   .dp-fgrid {
     grid-template-columns: 1fr;
@@ -1150,13 +1169,89 @@
 
   .dp-pag-row {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: 8px;
+    text-align: center;
   }
 
   .dp-page-size {
     justify-content: center;
-  }  .dp-overlay { padding: 16px; }
+  }
+  .dp-overlay { padding: 16px; }
+}
+
+@media (max-width: 480px) {
+  .dp-page {
+    gap: 14px;
+  }
+
+  .dp-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .dp-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+
+  .dp-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .dp-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dp-stat-val {
+    font-size: 16px;
+  }
+
+  .dp-stat-lbl {
+    font-size: 9px;
+  }
+
+  .dp-title {
+    font-size: 20px;
+  }
+
+  .dp-chart-card {
+    padding: 12px 10px;
+  }
+
+  .dp-chart-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .dp-chart-legend {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dp-form-page-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .dp-form-page-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .dp-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dp-title {
+    font-size: 18px;
+  }
 }
 
 /* =========================================================

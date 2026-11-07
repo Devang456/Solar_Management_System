@@ -245,6 +245,8 @@
 /* Structured Table */
 .ram-table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
 }
@@ -256,6 +258,7 @@
 
 .ram-table {
   width: 100%;
+  min-width: 680px;
   border-collapse: collapse;
   text-align: left;
   font-size: 13px;
@@ -444,7 +447,44 @@
 }
 
 @media (max-width: 640px) {
+  .record-activity-modal-overlay {
+    padding: 10px;
+  }
+  .record-activity-modal {
+    max-height: 94vh;
+    border-radius: 12px;
+  }
+  .ram-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .ram-body {
+    padding: 14px 16px;
+  }
   .ram-stats-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .record-activity-modal-overlay {
+    padding: 4px;
+  }
+  .ram-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .ram-header-title {
+    font-size: 16px;
+  }
+  .ram-filter-bar {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .ram-stats-row {
+    grid-template-columns: 1fr;
   }
 }

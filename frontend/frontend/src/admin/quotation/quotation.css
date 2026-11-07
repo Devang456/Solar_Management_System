@@ -1299,9 +1299,58 @@
   .qs-stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
+  .qs-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .qs-header-actions {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+  }
   .qs-stats-grid { grid-template-columns: 1fr; }
-  .qs-f { flex-wrap: wrap; }
+  .qs-f {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
   .qs-comp-add .cdropdown { flex-basis: 100%; }
+  .qs-form-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .qs-calc-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .qs-pagination-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+}
+@media (max-width: 480px) {
+  .qs-view-header,
+  .qs-modal-header {
+    padding: 12px 14px !important;
+  }
+  .qs-view-modal-body,
+  .qs-form-body {
+    padding: 12px 14px !important;
+  }
+  .qs-modal-actions,
+  .qs-view-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 12px 14px 14px !important;
+  }
+  .qs-modal-actions button,
+  .qs-view-actions button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .qs-view-section {
+    padding: 12px 14px !important;
+  }
 }
 
 /* ── Form Field Validation Errors ── */

@@ -164,11 +164,28 @@
 @media (max-width: 640px) {
   .shared-confirm {
     padding: 18px 18px 16px;
+    max-width: calc(100vw - 32px);
   }
   .shared-confirm__actions {
     flex-direction: column;
   }
   .shared-confirm__btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .shared-confirm-backdrop {
+    padding: 10px;
+  }
+  .shared-confirm {
+    padding: 16px 14px 14px;
+    max-width: calc(100vw - 20px);
+  }
+  .shared-confirm__title {
+    font-size: 16px;
+  }
+  .shared-confirm__message {
+    font-size: 13px;
   }
 }

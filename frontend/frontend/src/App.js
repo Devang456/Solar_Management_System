@@ -11,6 +11,7 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 import Login from "./admin/login/login";
 
 // Lazy load route-level page components for performance and code-splitting
+const LandingPage = lazy(() => import("./landing/LandingPage"));
 const ForgotPassword = lazy(() => import("./admin/ForgotPassword/Forgot.Password"));
 const ResetPassword = lazy(() => import("./admin/ResetPassword/ResetPassword"));
 const Dashboard = lazy(() => import("./admin/dashboard/Dashboard/Dashboard"));
@@ -90,6 +91,10 @@ function App() {
               <ErrorBoundary>
               <Suspense fallback={<PageLoader fullScreen />}>
                 <Routes>
+                  {/* Landing page as entry point for portfolio visitors */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/landing" element={<LandingPage />} />
+
                   <Route path="/admin/login" element={<PublicRoute><Login /></PublicRoute>} />
                   <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
                   <Route path="/admin/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
@@ -103,7 +108,7 @@ function App() {
                   <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                   <Route path="/admin/:section" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                   <Route path="/admin/:section/:id" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                  <Route path="*" element={<Navigate to="/admin/login" replace />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Suspense>
               </ErrorBoundary>

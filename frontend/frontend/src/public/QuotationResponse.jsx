@@ -99,10 +99,19 @@ const SignatureCanvas = ({ onSave }) => {
 const GlobalStyles = () => (
   <style>{`
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; overflow-x: hidden; height: 100%; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; height: 100%; width: 100%; }
     body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    #root { min-height: 100vh; height: 100%; overflow-y: auto; }
+    #root { min-height: 100vh; height: 100%; overflow-y: auto; width: 100%; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 640px) {
+      .qr-card-header { padding: 20px 16px !important; }
+      .qr-card-body { padding: 18px 14px !important; }
+      .qr-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; width: 100% !important; }
+      .qr-table-wrap table { min-width: 460px !important; }
+      .qr-btn-group { flex-direction: column !important; }
+      .qr-action-btn { width: 100% !important; flex: none !important; }
+    }
   `}</style>
 );
 
@@ -251,20 +260,20 @@ const QuotationResponse = () => {
       <div style={{ padding: "24px 16px 40px" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           {/* Header */}
-          <div style={{ background: "linear-gradient(135deg, #2c5364, #2563eb)", borderRadius: "12px 12px 0 0", padding: "28px 32px", textAlign: "center" }}>
+          <div className="qr-card-header" style={{ background: "linear-gradient(135deg, #2c5364, #2563eb)", borderRadius: "12px 12px 0 0", padding: "28px 32px", textAlign: "center" }}>
             <h1 style={{ margin: 0, color: "#fff", fontSize: 22, fontWeight: 700 }}>Quotation {quotation?.quotationId}</h1>
             {quotation?.projectName && <p style={{ margin: "6px 0 0", color: "rgba(255,255,255,0.85)", fontSize: 14 }}>{quotation.projectName}</p>}
           </div>
 
           {/* Card Body */}
-          <div style={{ background: "#fff", borderRadius: "0 0 12px 12px", padding: "28px 32px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
+          <div className="qr-card-body" style={{ background: "#fff", borderRadius: "0 0 12px 12px", padding: "28px 32px", boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
             <p style={{ margin: "0 0 20px", fontSize: 14, color: "#6b7280", lineHeight: 1.6 }}>
               Dear <strong>{quotation?.client}</strong>, please review the quotation below and take action.
             </p>
 
             {/* Items Table */}
-            <div style={{ border: "1px solid #e5e7eb", borderRadius: 8, overflow: "hidden", marginBottom: 20 }}>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <div className="qr-table-wrap" style={{ border: "1px solid #e5e7eb", borderRadius: 8, overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: 20 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 460 }}>
                 <thead>
                   <tr style={{ background: "#f9fafb" }}>
                     <th style={{ padding: "10px 12px", fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", textAlign: "left" }}>#</th>
@@ -326,7 +335,7 @@ const QuotationResponse = () => {
             )}
 
             {/* Action Selection */}
-            <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
+            <div className="qr-btn-group" style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
               {[
                     { val: "Approved", label: "\u2705 Approve", bg: "#16a34a" },
                     { val: "Negotiating", label: "\uD83D\uDCAC Negotiate", bg: "#ca8a04" },
@@ -335,6 +344,7 @@ const QuotationResponse = () => {
                 <button
                   key={btn.val}
                   type="button"
+                  className="qr-action-btn"
                   onClick={() => { setAction(btn.val); setSignature(null); setReason(""); }}
                   style={{
                     flex: 1, minWidth: 120, padding: "12px 16px", border: action === btn.val ? `2px solid ${btn.bg}` : "2px solid #e5e7eb",

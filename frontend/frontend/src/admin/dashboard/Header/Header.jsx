@@ -10,7 +10,7 @@ const getSeverityColor = (severity) => {
   return "#10b981";
 };
 
-const Header = ({ title, onNotificationClick, hideNotifications = false }) => {
+const Header = ({ title, onNotificationClick, hideNotifications = false, onToggleSidebar }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,6 +74,24 @@ const Header = ({ title, onNotificationClick, hideNotifications = false }) => {
 
   return (
     <header className="header">
+      <div className="header-left">
+        {onToggleSidebar && (
+          <button
+            type="button"
+            className="header-menu-btn"
+            onClick={onToggleSidebar}
+            aria-label="Toggle navigation menu"
+            title="Toggle Menu"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        )}
+        {title && <h2 className="header-title">{title}</h2>}
+      </div>
       <div className="header-right">
         {!hideNotifications && (
         <div className="header-notif-container" ref={dropdownRef}>

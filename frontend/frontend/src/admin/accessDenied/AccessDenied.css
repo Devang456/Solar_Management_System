@@ -372,6 +372,7 @@
   }
   .access-denied-content {
     padding: 20px 16px;
+    overflow-y: auto;
   }
   .ad-card {
     padding: 30px 24px 26px;
@@ -381,6 +382,31 @@
     font-size: 25px;
   }
   .ad-account-role {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .access-denied-content {
+    padding: 16px 12px;
+  }
+  .ad-card {
+    padding: 24px 16px 20px;
+    border-radius: 14px;
+    width: 100%;
+  }
+  .ad-title {
+    font-size: 20px;
+  }
+  .ad-lead {
+    font-size: 13px;
+  }
+  .ad-btn--primary {
+    width: 100%;
+    justify-content: center;
+  }
+  .ad-orb--amber,
+  .ad-orb--teal {
     display: none;
   }
 }

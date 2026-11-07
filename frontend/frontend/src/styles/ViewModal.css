@@ -22,8 +22,13 @@
 }
 
 @keyframes vm-overlay-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ── Modal Container ── */
@@ -45,6 +50,7 @@
     opacity: 0;
     transform: translateY(16px) scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -113,10 +119,22 @@
   scrollbar-width: thin !important;
 }
 
-.vm-view-body::-webkit-scrollbar { width: 5px; }
-.vm-view-body::-webkit-scrollbar-track { background: transparent; }
-.vm-view-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-.vm-view-body::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+.vm-view-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.vm-view-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vm-view-body::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.vm-view-body::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
 
 /* ── Section inside body ── */
 .vm-view-section {
@@ -264,5 +282,42 @@
 
   .vm-view-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .vm-overlay {
+    padding: 4px;
+    align-items: flex-end;
+  }
+
+  .vm-modal-header {
+    padding: 14px 16px;
+  }
+
+  .vm-modal-title h3 {
+    font-size: 15px;
+  }
+
+  .vm-view-body {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .vm-view-section {
+    padding: 14px 12px;
+  }
+
+  .vm-modal-footer {
+    padding: 12px 16px;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .vm-modal-footer .vm-btn-close,
+  .vm-modal-footer .vm-btn-close-primary,
+  .vm-modal-footer .vm-btn-primary {
+    width: 100%;
+    justify-content: center;
   }
 }

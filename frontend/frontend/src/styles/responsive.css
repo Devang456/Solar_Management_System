@@ -1,0 +1,763 @@
+/* ==========================================================================
+   Universal Responsive Stylesheet — Solar Management System
+   Ensures 100% full responsiveness across all screen sizes:
+   320px, 360px, 375px, 390px, 414px, 480px, 600px, 768px, 820px, 1024px, 1280px, 1440px, 1920px
+   ========================================================================== */
+
+/* ── Global Layout Reset & Zero-Overflow Safety ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+svg:not(.recharts-surface):not([class*="recharts"]) {
+  max-width: 100%;
+}
+
+/* Ensure flex/grid children don't overflow containers */
+.dashboard-layout,
+.dashboard-main,
+.dashboard-content,
+.dashboard-card,
+.stat-card,
+.lm-container,
+.cm-container,
+.qs-container,
+.ss-page,
+.sd-page,
+.pa-page,
+.im-page,
+.tm-page,
+.pp-container,
+.ch-page,
+.dp-container,
+.pc-page,
+.inv-page,
+.vendor-page,
+.wh-page,
+.bm-page,
+.payment-module,
+.subsidy-page,
+.doc-module,
+.usr-module,
+.rp-module,
+.pf-container,
+.set-module,
+.activity-page,
+.monitoring-page,
+.alerts-page,
+.maint-page,
+.ticket-module,
+.amc-page,
+.warranty-module,
+.testing-page {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ── Universal Table Horizontal Scroll Safety ── */
+.table-wrapper,
+.scrollable-table-wrapper,
+.table-wrap,
+.lm-table-wrapper,
+.cm-table-wrapper,
+.qs-table-wrapper,
+.ss-table-wrapper,
+.sd-table-wrapper,
+.pa-table-wrapper,
+.im-table-wrapper,
+.tm-table-wrapper,
+.ch-table-wrapper,
+.dp-table-wrapper,
+.pc-table-wrapper,
+.inv-table-wrapper,
+.vendor-table-wrapper,
+.wh-table-wrapper,
+.bm-table-wrapper,
+.subsidy-table-wrapper,
+.doc-table-wrapper,
+.usr-table-wrapper,
+.rp-table-wrapper,
+.activity-table-wrapper,
+.alerts-table-wrapper,
+.maint-table-wrapper,
+.ticket-table-wrapper,
+.amc-table-wrapper,
+.warranty-table-wrapper,
+.testing-table-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure table headers and data don't collapse unreadably */
+.table-wrapper table,
+.scrollable-table-wrapper table,
+.table-wrap table,
+.lm-table-wrapper table,
+.cm-table-wrapper table,
+.qs-table-wrapper table,
+.ss-table-wrapper table,
+.sd-table-wrapper table,
+.pa-table-wrapper table,
+.im-table-wrapper table,
+.tm-table-wrapper table,
+.ch-table-wrapper table,
+.dp-table-wrapper table,
+.pc-table-wrapper table,
+.inv-table-wrapper table,
+.vendor-table-wrapper table,
+.wh-table-wrapper table,
+.bm-table-wrapper table,
+.subsidy-table-wrapper table,
+.doc-table-wrapper table,
+.usr-table-wrapper table,
+.rp-table-wrapper table,
+.activity-table-wrapper table,
+.alerts-table-wrapper table,
+.maint-table-wrapper table,
+.ticket-table-wrapper table,
+.amc-table-wrapper table,
+.warranty-table-wrapper table,
+.testing-table-wrapper table {
+  max-width: none;
+}
+
+/* ── Universal Modal Responsive Rules ── */
+@media (max-width: 768px) {
+  .cm-overlay,
+  .vm-overlay,
+  .lm-overlay,
+  .qs-overlay,
+  .ss-overlay,
+  .sd-overlay,
+  .pa-overlay,
+  .im-overlay,
+  .tm-overlay,
+  .ch-overlay,
+  .dp-overlay,
+  .pc-overlay,
+  .inv-overlay,
+  .vendor-overlay,
+  .wh-overlay,
+  .bm-overlay,
+  .subsidy-overlay,
+  .doc-overlay,
+  .usr-overlay,
+  .rp-overlay,
+  .common-modal-overlay,
+  .shared-confirm-backdrop,
+  .lm-reason-overlay,
+  .ticket-overlay,
+  .amc-overlay,
+  .warranty-overlay,
+  .maint-overlay,
+  .testing-overlay {
+    padding: 10px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .cm-view-modal,
+  .vm-view-modal,
+  .lm-modal,
+  .lm-view-modal,
+  .qs-modal,
+  .qs-view-modal,
+  .ss-form-modal,
+  .ss-view-modal,
+  .ss-report-modal,
+  .sd-form-modal,
+  .sd-view-modal,
+  .pa-form-modal,
+  .pa-view-modal,
+  .im-form-modal,
+  .im-view-modal,
+  .tm-form-modal,
+  .tm-view-modal,
+  .ch-form-modal,
+  .ch-view-modal,
+  .dp-form-modal,
+  .dp-view-modal,
+  .pc-modal,
+  .pc-view-modal,
+  .inv-modal,
+  .inv-view-modal,
+  .vendor-modal,
+  .vendor-view-modal,
+  .wh-modal,
+  .wh-view-modal,
+  .bm-modal,
+  .bm-modal-wide,
+  .bm-modal-form,
+  .subsidy-modal,
+  .subsidy-view-modal,
+  .doc-modal,
+  .doc-view-modal,
+  .usr-modal,
+  .usr-view-modal,
+  .rp-modal,
+  .common-modal-container,
+  .shared-confirm,
+  .lm-reason-modal,
+  .ticket-modal,
+  .ticket-view-modal,
+  .amc-modal,
+  .amc-view-modal,
+  .warranty-modal,
+  .warranty-view-modal,
+  .maint-modal,
+  .maint-view-modal,
+  .testing-modal,
+  .testing-view-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    border-radius: 14px !important;
+    margin: 0 !important;
+  }
+
+  /* Form grids inside modals */
+  .lm-form-grid,
+  .cm-form-grid,
+  .qs-form-grid,
+  .ss-form-grid,
+  .ss-form-grid-2,
+  .ss-form-grid-3,
+  .sd-form-grid,
+  .pa-form-grid,
+  .im-form-grid,
+  .tm-form-grid,
+  .tm-form-grid-2,
+  .tm-form-grid-3,
+  .tm-form-grid-4,
+  .ch-form-grid,
+  .dp-form-grid,
+  .pc-form-grid,
+  .inv-form-grid,
+  .vendor-form-grid,
+  .wh-form-grid,
+  .bm-form-grid,
+  .subsidy-form-grid,
+  .doc-form-grid,
+  .usr-module .form-grid,
+  .rp-module .form-grid,
+  .ticket-form-grid,
+  .amc-form-grid,
+  .warranty-form-grid,
+  .maint-form-grid,
+  .testing-form-grid,
+  .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .lm-view-grid,
+  .cm-view-grid,
+  .qs-view-grid,
+  .ss-view-grid,
+  .sd-view-grid,
+  .pa-view-grid,
+  .im-view-grid,
+  .tm-view-grid,
+  .ch-view-grid,
+  .dp-view-grid,
+  .bm-view-grid,
+  .vm-view-grid,
+  .user-detail__grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .full-width,
+  .lm-full-width,
+  .cm-full-width,
+  .qs-full-width,
+  .ss-full-width,
+  .bm-full-width,
+  .tm-full-width,
+  .field--full {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .cm-overlay,
+  .vm-overlay,
+  .lm-overlay,
+  .qs-overlay,
+  .ss-overlay,
+  .bm-overlay,
+  .common-modal-overlay,
+  .shared-confirm-backdrop {
+    padding: 6px !important;
+  }
+
+  .cm-view-modal,
+  .vm-view-modal,
+  .lm-modal,
+  .lm-view-modal,
+  .qs-modal,
+  .qs-view-modal,
+  .ss-form-modal,
+  .ss-view-modal,
+  .bm-modal,
+  .common-modal-container {
+    max-height: 95vh !important;
+    border-radius: 12px !important;
+  }
+
+  .cm-view-modal-header,
+  .vm-modal-header,
+  .lm-modal-header,
+  .lm-view-modal-header,
+  .qs-modal-header,
+  .qs-view-header,
+  .common-modal-header,
+  .bm-modal-header {
+    padding: 12px 14px !important;
+  }
+
+  .cm-view-modal-body,
+  .vm-modal-body,
+  .lm-form-grid,
+  .lm-view-modal-body,
+  .qs-modal form,
+  .qs-view-modal-body,
+  .common-modal-body,
+  .bm-modal-body {
+    padding: 12px 14px !important;
+  }
+
+  .cm-view-modal-footer,
+  .vm-modal-footer,
+  .lm-modal-actions,
+  .lm-view-modal-footer,
+  .qs-modal-actions,
+  .common-modal-footer,
+  .bm-modal-footer,
+  .bm-form-page-footer {
+    padding: 10px 14px 14px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .cm-view-modal-footer button,
+  .vm-modal-footer button,
+  .lm-modal-actions button,
+  .lm-view-modal-footer button,
+  .qs-modal-actions button,
+  .common-modal-footer button,
+  .bm-modal-footer button {
+    flex: 1 1 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+/* ── Universal Toolbar, Filter Bar & Search Inputs ── */
+@media (max-width: 768px) {
+  .lm-header,
+  .cm-header,
+  .qs-header,
+  .ss-header,
+  .sd-header,
+  .pa-header,
+  .im-header,
+  .tm-header,
+  .ch-header,
+  .dp-header,
+  .pc-header,
+  .inv-header,
+  .vendor-header,
+  .wh-header,
+  .bm-header,
+  .pm-header,
+  .subsidy-header,
+  .doc-header,
+  .usr-header,
+  .rp-header,
+  .set-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .lm-header-actions,
+  .cm-header-actions,
+  .qs-header-actions,
+  .ss-header-actions,
+  .sd-header-actions,
+  .pa-header-actions,
+  .im-header-actions,
+  .tm-header-actions,
+  .pc-header-actions,
+  .inv-header-actions,
+  .vendor-header-actions,
+  .wh-header-actions,
+  .bm-header-actions,
+  .pm-header-actions,
+  .usr-header-actions,
+  .rp-header-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .lm-header-actions button,
+  .cm-header-actions button,
+  .qs-header-actions button,
+  .ss-header-actions button,
+  .sd-header-actions button,
+  .pa-header-actions button,
+  .im-header-actions button,
+  .tm-header-actions button,
+  .pc-header-actions button,
+  .inv-header-actions button,
+  .vendor-header-actions button,
+  .wh-header-actions button,
+  .bm-header-actions button,
+  .pm-header-actions button,
+  .usr-header-actions button,
+  .rp-header-actions button {
+    flex: 1 1 auto !important;
+  }
+
+  .lm-filters,
+  .cm-filters,
+  .qs-filters,
+  .ss-toolbar,
+  .sd-toolbar,
+  .pa-toolbar,
+  .im-toolbar,
+  .tm-toolbar,
+  .pc-filter-bar,
+  .inv-toolbar,
+  .vendor-toolbar,
+  .wh-toolbar,
+  .bm-toolbar,
+  .pm-toolbar,
+  .usr-module .toolbar,
+  .rp-toolbar,
+  .activity-filter-bar,
+  .ticket-filter-bar,
+  .amc-filter-bar,
+  .warranty-filter-bar,
+  .maint-filter-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .lm-search,
+  .cm-search,
+  .qs-search,
+  .ss-search,
+  .sd-search,
+  .pa-search,
+  .im-search,
+  .tm-search,
+  .pc-filter-search,
+  .inv-search,
+  .vendor-search,
+  .wh-search,
+  .bm-search,
+  .pm-search,
+  .act-search,
+  .search-input-wrap {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  .lm-filter-selects,
+  .cm-filter-selects,
+  .qs-filter-selects,
+  .filter-selects {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .lm-filter-selects select,
+  .cm-filter-selects select,
+  .qs-filter-selects select {
+    flex: 1 1 140px !important;
+    width: auto !important;
+  }
+}
+
+/* ── Universal Tabs Scroll Container ── */
+.lm-tabs,
+.cm-tabs,
+.qs-tabs,
+.ss-tabs,
+.sd-tabs,
+.pa-tabs,
+.im-tabs,
+.tm-tabs,
+.pc-tabs,
+.inv-tabs,
+.vendor-tabs,
+.wh-tabs,
+.bm-tabs,
+.pm-tabs,
+.doc-tabs,
+.usr-tabs,
+.rp-tabs,
+.set-tabs,
+.ticket-tabs,
+.amc-tabs,
+.warranty-tabs,
+.maint-tabs,
+.production-tabs {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  white-space: nowrap !important;
+}
+
+.lm-tabs::-webkit-scrollbar,
+.set-tabs::-webkit-scrollbar,
+.rp-tabs::-webkit-scrollbar,
+.production-tabs::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* ── Universal Pagination Responsiveness ── */
+@media (max-width: 640px) {
+  .lm-pagination-row,
+  .cm-pagination-row,
+  .qs-pagination-row,
+  .ss-pagination-row,
+  .sd-pagination-row,
+  .pa-pagination-row,
+  .im-pagination-row,
+  .tm-pagination-row,
+  .ch-pagination-row,
+  .dp-pagination-row,
+  .pc-pagination-row,
+  .inv-pagination-row,
+  .vendor-pagination-row,
+  .wh-pagination-row,
+  .bm-pagination-row,
+  .pagination-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .pagination-controls,
+  .pagination-pages {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+}
+
+/* ── Recharts Responsive Container Guard ── */
+.recharts-responsive-container {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.recharts-wrapper {
+  max-width: none !important;
+}
+
+.recharts-surface {
+  overflow: visible;
+}
+
+/* ── Specific Screen Size Optimizations ── */
+
+/* 1920px & Large Desktops */
+@media (min-width: 1920px) {
+  .dashboard-content {
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+/* 1280px - 1440px Laptops */
+@media (max-width: 1440px) {
+  .dashboard-content {
+    padding: 10px 24px;
+  }
+}
+
+/* 1024px Tablets Landscape / Small Laptops */
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .dashboard-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .dashboard-content {
+    padding: 10px 18px;
+    gap: 12px;
+  }
+
+  .dashboard-layout .charts-row {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .dashboard-layout .tables-row {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .ss-charts-row,
+  .monitoring-row,
+  .tech-charts-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 768px - 820px Tablets Portrait (iPad Air / iPad Mini) */
+@media (max-width: 820px) {
+  .dashboard-content {
+    padding: 10px 14px;
+  }
+
+  .dashboard-card {
+    padding: 16px !important;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+/* 600px Phablets / Foldables */
+@media (max-width: 600px) {
+  .dashboard-content {
+    padding: 8px 12px;
+  }
+
+  .card-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .rev-chart-controls {
+    align-self: flex-start !important;
+  }
+}
+
+/* 480px Standard Mobile Phones */
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .dashboard-card {
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .quick-action-btn {
+    padding: 10px 12px !important;
+  }
+
+  .card-top h3 {
+    font-size: 14px !important;
+  }
+
+  .stat-card {
+    padding: 10px 12px !important;
+    min-height: 72px !important;
+  }
+
+  .stat-icon {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .stat-value {
+    font-size: 18px !important;
+  }
+
+  .stat-title {
+    font-size: 10px !important;
+  }
+}
+
+/* 320px - 375px Ultra-Compact Mobile Phones (iPhone SE, Galaxy A) */
+@media (max-width: 375px) {
+  .dashboard-content {
+    padding: 6px 8px;
+    gap: 8px;
+  }
+
+  .dashboard-card {
+    padding: 10px 12px !important;
+  }
+
+  .stat-card {
+    padding: 8px 10px !important;
+    gap: 10px !important;
+  }
+
+  .stat-icon {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+  }
+
+  .stat-value {
+    font-size: 16px !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+  }
+
+  .header {
+    padding: 10px 12px !important;
+  }
+
+  .header-btn {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+

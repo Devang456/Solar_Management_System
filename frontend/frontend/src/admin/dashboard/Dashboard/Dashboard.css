@@ -798,17 +798,32 @@
   .dashboard-layout .stats-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (max-width: 900px) {
-  .dashboard-layout .stats-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 1024px) {
+  .dashboard-layout .dashboard-main,
+  .dashboard-layout.sidebar-collapsed .dashboard-main,
+  .sidebar.collapsed + .dashboard-main,
+  .sidebar.collapsed ~ .dashboard-main {
+    margin-left: 0 !important;
+  }
   .dashboard-layout .charts-row { grid-template-columns: 1fr; }
   .dashboard-layout .tables-row { grid-template-columns: 1fr !important; }
 }
 
+@media (max-width: 900px) {
+  .dashboard-layout .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 768px) {
-  .dashboard-layout .dashboard-main { margin-left: 0; }
+  .dashboard-layout .dashboard-main { margin-left: 0 !important; }
+  .dashboard-layout .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-layout .dashboard-content { padding: 12px 14px; gap: 10px; }
+  .dashboard-layout .quick-actions-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+@media (max-width: 480px) {
   .dashboard-layout .stats-grid { grid-template-columns: 1fr; }
-  .dashboard-layout .dashboard-content { padding: 18px; }
-  .dashboard-layout .quick-actions-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard-layout .dashboard-content { padding: 10px 8px; gap: 8px; }
+  .dashboard-layout .quick-actions-grid { grid-template-columns: 1fr; }
 }
 
 /* ========== HIDE NUMBER INPUT SPINNERS ========== */

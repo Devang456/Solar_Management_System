@@ -2199,7 +2199,8 @@
    Responsive
    ========================================================= */
 @media (max-width: 1200px) {
-  .im-stats {
+  .im-stats,
+  .inv-stats {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -2212,14 +2213,35 @@
 }
 
 @media (max-width: 768px) {
-  .im-stats {
+  .inv-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .inv-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .inv-filter-bar .inv-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .im-stats,
+  .inv-stats {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  .im-stat-card {
+  .im-stat-card,
+  .inv-stats .stat-card {
     padding: 14px;
   }
-  .im-stat-value {
+  .im-stat-value,
+  .inv-stats .stat-value {
     font-size: 18px;
   }
 
@@ -2264,7 +2286,8 @@
   .im-pagination-row {
     flex-direction: column;
     gap: 10px;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
 
   .im-view-grid-2 {
@@ -2288,6 +2311,68 @@
   .im-mat-toggle {
     width: 100%;
     justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .inv-stats,
+  .im-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .inv-stats .stat-card,
+  .im-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+
+  .inv-stats .stat-icon,
+  .im-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .inv-stats .stat-icon svg,
+  .im-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .inv-stats .stat-value,
+  .im-stat-value {
+    font-size: 16px;
+  }
+
+  .inv-stats .stat-label,
+  .im-stat-label {
+    font-size: 9px;
+  }
+
+  .inv-header-title {
+    font-size: 20px;
+  }
+
+  .im-form-page-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .im-form-page-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .inv-stats,
+  .im-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .inv-header-title {
+    font-size: 18px;
   }
 }
 

@@ -357,10 +357,12 @@
 
 .im-table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .im-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
   font-size: 13px;
 }
@@ -1721,4 +1723,123 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
+}
+
+/* =========================================================
+   Responsive Breakpoints
+   ========================================================= */
+@media (max-width: 1200px) {
+  .im-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .im-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .im-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .im-header-actions .im-btn {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .im-toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .im-search {
+    max-width: none;
+    width: 100%;
+  }
+
+  .im-form-page-footer {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .im-form-page-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .im-page,
+  .im-form-page {
+    gap: 14px;
+  }
+
+  .im-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .im-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+
+  .im-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .im-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .im-stat-value {
+    font-size: 16px;
+  }
+
+  .im-stat-label {
+    font-size: 9px;
+  }
+
+  .im-title {
+    font-size: 20px;
+  }
+
+  .im-mat-request-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .im-mat-request-item {
+    flex-direction: column;
+  }
+
+  .im-mat-request-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .im-task-log-form-actions {
+    flex-direction: column;
+  }
+
+  .im-task-log-form-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .im-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .im-title {
+    font-size: 18px;
+  }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Sidebar from "../dashboard/Sidebar/Sidebar";
@@ -17,6 +17,7 @@ const LockIcon = () => (
 const AccessDenied = () => {
   const { user, permissions } = useAuth();
   const navigate = useNavigate();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // A role with zero permissions is locked out of module features;
   // a role with SOME access was denied only the specific section.
@@ -33,14 +34,28 @@ const AccessDenied = () => {
     return initials || "U";
   };
 
+  const handleNav = (key) => {
+    setMobileSidebarOpen(false);
+    navigate(`/admin/${key}`);
+  };
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar added on the left */}
-      <Sidebar activeItem="access-denied" onNavigate={(key) => navigate(`/admin/${key}`)} />
+      <Sidebar
+        activeItem="access-denied"
+        onNavigate={handleNav}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
+      />
       
       <div className="dashboard-main">
         {/* Header */}
-        <Header hideNotifications onNotificationClick={() => {}} />
+        <Header
+          hideNotifications
+          onNotificationClick={() => {}}
+          onToggleSidebar={() => setMobileSidebarOpen((prev) => !prev)}
+        />
 
         <div className="access-denied-content">
           <span className="ad-orb ad-orb--amber" aria-hidden="true" />

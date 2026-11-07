@@ -198,8 +198,10 @@
   border-radius: 14px;
   padding: 6px;
   width: fit-content;
+  max-width: 100%;
   margin-bottom: 16px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 .mm-tab {
@@ -537,6 +539,7 @@
 
 .mm-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .mm-table {
   width: 100%;
@@ -1035,7 +1038,9 @@
 }
 
 @media (max-width: 960px) {
-  .mm-stats {
+  .mm-stats,
+  .maintenance-module .mm-stats,
+  .maintenance-module .maint-stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .mm-mini-stats {
@@ -1047,12 +1052,23 @@
   }
 }
 
+@media (max-width: 768px) {
+  .mm-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .product-pagination-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 @media (max-width: 640px) {
   .maintenance-module {
     padding: 18px;
-  }
-  .mm-stats {
-    grid-template-columns: 1fr;
   }
   .mm-toolbar {
     flex-direction: column;
@@ -1064,6 +1080,59 @@
   }
   .mm-search-wrap {
     max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .maintenance-module {
+    padding: 12px;
+  }
+  .mm-stats,
+  .maintenance-module .mm-stats,
+  .maintenance-module .maint-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .mm-stat-card {
+    padding: 10px 12px;
+    min-height: 68px;
+  }
+  .mm-stat-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .mm-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .mm-stat-value {
+    font-size: 16px;
+  }
+  .mm-stat-label {
+    font-size: 9px;
+  }
+  .mm-title {
+    font-size: 20px;
+  }
+  .mm-modal__footer {
+    flex-direction: column;
+    width: 100%;
+  }
+  .mm-modal__footer .mm-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .mm-stats,
+  .maintenance-module .mm-stats,
+  .maintenance-module .maint-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .mm-title {
+    font-size: 18px;
   }
 }
 

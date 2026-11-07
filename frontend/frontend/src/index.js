@@ -4,6 +4,7 @@ import "./styles/ActionButtons.css";
 import "./styles/CloseButtons.css";
 import "./styles/Modal.css";
 import "./styles/ViewModal.css";
+import "./styles/responsive.css";
 import App from "./App";
 import { initDateFieldClick } from "./utils/dateFieldClick";
 import "leaflet/dist/leaflet.css";
