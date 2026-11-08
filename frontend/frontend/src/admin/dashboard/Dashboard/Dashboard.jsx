@@ -752,12 +752,37 @@ const isSameDay = (iso, ref = new Date()) => {
   );
 };
 
+const DEMO_LEADS_DATA = [
+  { id: "LD-2026-104", name: "Apex Logistics Solar Park", value: 3500000, status: "Proposal Sent", createdAt: new Date() },
+  { id: "LD-2026-103", name: "Surat Diamond Mill Rooftop", value: 2400000, status: "Qualified", createdAt: new Date() },
+  { id: "LD-2026-102", name: "Greenfield Cold Storage PV", value: 1800000, status: "Contacted", createdAt: new Date() },
+  { id: "LD-2026-101", name: "Sunshine Residency Society", value: 950000, status: "Interested", createdAt: new Date() },
+  { id: "LD-2026-100", name: "Vibrant Auto Ancillary 40kW", value: 1650000, status: "Follow-up", createdAt: new Date() },
+];
+
+const DEMO_QUOTATIONS_DATA = [
+  { id: "QT-2026-081", client: "Adani Township Solar", amount: 4200000, status: "Sent", createdAt: new Date() },
+  { id: "QT-2026-079", client: "Mahindra Cold Logistics", amount: 2850000, status: "Approved", createdAt: new Date() },
+  { id: "QT-2026-074", client: "Rajkot Engineering Works", amount: 1950000, status: "Sent", createdAt: new Date() },
+  { id: "QT-2026-071", client: "Kiran Gems Industrial Hub", amount: 3100000, status: "Approved", createdAt: new Date() },
+  { id: "QT-2026-068", client: "Silver Oak Educational Campus", amount: 1450000, status: "Draft", createdAt: new Date() },
+];
+
+const DEMO_TICKETS_DATA = [
+  { id: "TKT-104", subject: "Inverter Grid Synchronization Alert", priority: "Critical", status: "In Progress" },
+  { id: "TKT-103", subject: "String 4 Disconnect Switch Inspection", priority: "High", status: "Open" },
+  { id: "TKT-102", subject: "Quarterly Panel Washing & Tilt Check", priority: "Medium", status: "In Progress" },
+  { id: "TKT-101", subject: "Net Metering Billing Discrepancy", priority: "Low", status: "Pending" },
+  { id: "TKT-099", subject: "Annual Preventive Maintenance Service", priority: "Medium", status: "Open" },
+];
+
 const Dashboard = () => {
   const { section, id } = useParams();
   const navigate = useNavigate();
   const activeItem = section || "dashboard";
   const sidebarActiveItem = activeItem && activeItem.endsWith("-activity") ? activeItem.replace("-activity", "") : activeItem;
   const { user, canDo } = useAuth();
+  const isDemo = !!(user?.isDemo || user?.role === ROLES.DEMO_VIEWER);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Data states for dynamic reactivity (fetched strictly from the backend).
@@ -773,13 +798,26 @@ const Dashboard = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   // Radar axes (Total + status breakdown) — live status counts from installationAPI.getStats().
-  const installationRadar = [
-    { axis: "Total", name: "Total", value: Number(installationStats?.total) || 0 },
-    { axis: "Completed", name: "Completed", value: Number(installationStats?.completed) || 0 },
-    { axis: "In Progress", name: "In Progress", value: Number(installationStats?.inProgress) || 0 },
-    { axis: "Pending", name: "Pending", value: Number(installationStats?.pending) || 0 },
-  ];
-  const hasInstallationData = (installationStats?.total || 0) > 0;
+  const installationRadar = useMemo(() => {
+    const total = Number(installationStats?.total) || 0;
+    if (total > 0 || !isDemo) {
+      return [
+        { axis: "Total", name: "Total", value: total },
+        { axis: "Completed", name: "Completed", value: Number(installationStats?.completed) || 0 },
+        { axis: "In Progress", name: "In Progress", value: Number(installationStats?.inProgress) || 0 },
+        { axis: "Pending", name: "Pending", value: Number(installationStats?.pending) || 0 },
+      ];
+    }
+    // ONLY in Explore Demo: Fulfill with realistic installation pipeline
+    return [
+      { axis: "Total", name: "Total", value: 38 },
+      { axis: "Completed", name: "Completed", value: 24 },
+      { axis: "In Progress", name: "In Progress", value: 9 },
+      { axis: "Pending", name: "Pending", value: 5 },
+    ];
+  }, [installationStats, isDemo]);
+
+  const hasInstallationData = isDemo || (installationStats?.total || 0) > 0;
   const [recentQuotations, setRecentQuotations] = useState([]);
   const [quotationsLoading, setQuotationsLoading] = useState(true);
   const [quotationsError, setQuotationsError] = useState(false);
@@ -857,22 +895,48 @@ const Dashboard = () => {
   const displayLeadSources = useMemo(() => {
     const hasData = (leadSources || []).some((ls) => Number(ls.value) > 0);
     if (hasData) return leadSources;
-    return [
-      { name: "Website Direct", value: 38 },
-      { name: "Partner Referral", value: 26 },
-      { name: "Commercial Inbound", value: 20 },
-      { name: "Social & Events", value: 16 },
-    ];
-  }, [leadSources]);
+    if (isDemo) {
+      // ONLY in Explore Demo: Fulfill with realistic CRM source distribution
+      return [
+        { name: "Website Direct", value: 38 },
+        { name: "Partner Referral", value: 26 },
+        { name: "Commercial Inbound", value: 20 },
+        { name: "Social & Events", value: 16 },
+      ];
+    }
+    return [];
+  }, [leadSources, isDemo]);
 
   const leadSourcesTotal = displayLeadSources.reduce((sum, ls) => sum + (ls.value || 0), 0);
+
+  // Billing Status dataset — fulfilled with rich analytics in Explore Demo, actual DB data in Admin mode
+  const displayBillingData = useMemo(() => {
+    const hasData = (billingChartData || []).some(
+      (d) => Number(d.paid) > 0 || Number(d.pending) > 0 || Number(d.overdue) > 0
+    );
+    if (hasData) return billingChartData;
+    if (isDemo) {
+      const buckets = lastMonthsBuckets(chartRange);
+      const demoPaid = [380000, 450000, 520000, 490000, 610000, 720000];
+      const demoPending = [120000, 150000, 130000, 160000, 180000, 140000];
+      const demoOverdue = [35000, 42000, 28000, 39000, 45000, 32000];
+      return buckets.map((b, idx) => ({
+        month: b.label,
+        monthKey: b.key,
+        paid: demoPaid[idx % demoPaid.length],
+        pending: demoPending[idx % demoPending.length],
+        overdue: demoOverdue[idx % demoOverdue.length],
+      }));
+    }
+    return billingChartData;
+  }, [billingChartData, chartRange, isDemo]);
 
   // Compute live dynamic totals for the Billing Status card badges
   const billingTotals = useMemo(() => {
     let totalPaid = 0;
     let totalPending = 0;
     let totalOverdue = 0;
-    (billingChartData || []).forEach((b) => {
+    (displayBillingData || []).forEach((b) => {
       totalPaid += Number(b.paid) || 0;
       totalPending += Number(b.pending) || 0;
       totalOverdue += Number(b.overdue) || 0;
@@ -883,9 +947,9 @@ const Dashboard = () => {
       paid: totalPaid,
       pending: totalPending,
       overdue: totalOverdue,
-      rate: rate > 0 ? rate : 75,
+      rate: rate > 0 ? rate : (isDemo ? 78 : 0),
     };
-  }, [billingChartData]);
+  }, [displayBillingData, isDemo]);
 
   // Compute live dynamic totals for Revenue vs Expenses card badges
   const revenueTotals = useMemo(() => {
@@ -964,9 +1028,9 @@ const Dashboard = () => {
       };
     });
 
-    // Dynamic solar yield fallback ensures rich chart curves appear even if live DB is newly provisioned
+    // Dynamic solar yield fallback ensures rich chart curves appear in Explore Demo
     const hasYield = data.some((d) => d.generation > 0);
-    if (!hasYield) {
+    if (!hasYield && isDemo) {
       const baseline = [1850, 2120, 2480, 2890, 3150, 2760, 2340, 2100, 1980, 1820, 1690, 1540];
       return buckets.map((b, idx) => {
         const gen = baseline[idx % baseline.length];
@@ -979,7 +1043,7 @@ const Dashboard = () => {
     }
 
     return data;
-  }, [rawInstallationsList, chartRange]);
+  }, [rawInstallationsList, chartRange, isDemo]);
 
   const monitoringTotals = useMemo(() => {
     let totalGen = 0;
@@ -1013,55 +1077,55 @@ const Dashboard = () => {
     let rawVal = undefined;
     switch (stat.key) {
       case "totalLeads":
-        rawVal = counts.totalLeads;
+        rawVal = counts.totalLeads ?? (isDemo ? 42 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "activeCustomers":
-        rawVal = counts.activeCustomers;
+        rawVal = counts.activeCustomers ?? (isDemo ? 28 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "totalInstallations":
-        rawVal = counts.totalInstallations;
+        rawVal = counts.totalInstallations ?? (isDemo ? 38 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "pipelineValue":
-        rawVal = counts.pipelineValue;
+        rawVal = counts.pipelineValue || (isDemo ? 14800000 : undefined);
         return { ...stat, value: rawVal !== undefined ? formatINR(rawVal) : undefined };
       case "pendingQuotes":
-        rawVal = counts.pendingQuotes;
+        rawVal = counts.pendingQuotes ?? (isDemo ? 9 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "inventoryItems":
-        rawVal = counts.inventoryItems;
+        rawVal = counts.inventoryItems ?? (isDemo ? 120 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "assignedJobs":
-        rawVal = counts.assignedJobs;
+        rawVal = counts.assignedJobs ?? (isDemo ? 14 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "maintenanceDue":
-        rawVal = counts.maintenanceDue;
+        rawVal = counts.maintenanceDue ?? (isDemo ? 3 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "warrantyActive":
-        rawVal = counts.warrantyActive;
+        rawVal = counts.warrantyActive ?? (isDemo ? 26 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "revenue":
-        rawVal = billingStats?.totalInvoiced;
+        rawVal = billingStats?.totalInvoiced || billingTotals.paid || (isDemo ? 6450000 : undefined);
         return { ...stat, value: rawVal !== undefined ? formatINR(rawVal) : undefined };
       case "outstanding":
-        rawVal = billingStats?.outstanding;
+        rawVal = billingStats?.outstanding || billingTotals.pending || (isDemo ? 1280000 : undefined);
         return { ...stat, value: rawVal !== undefined ? formatINR(rawVal) : undefined };
       case "invoices":
-        rawVal = billingStats?.invoiceCount;
+        rawVal = billingStats?.invoiceCount || (isDemo ? 24 : undefined);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "overdue":
-        rawVal = billingStats?.overdueAmount;
+        rawVal = billingStats?.overdueAmount || billingTotals.overdue || (isDemo ? 35000 : undefined);
         return { ...stat, value: rawVal !== undefined ? formatINR(rawVal) : undefined };
       case "openTickets":
-        rawVal = ticketsLoading ? undefined : openTickets;
+        rawVal = ticketsLoading ? (isDemo ? 4 : undefined) : (openTickets || (isDemo ? 4 : 0));
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "inProgress":
-        rawVal = ticketsLoading ? undefined : inProgressTickets;
+        rawVal = ticketsLoading ? (isDemo ? 2 : undefined) : (inProgressTickets || (isDemo ? 2 : 0));
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "resolvedToday":
-        rawVal = ticketsLoading ? undefined : resolvedToday;
+        rawVal = ticketsLoading ? (isDemo ? 3 : undefined) : (resolvedToday || (isDemo ? 3 : 0));
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "totalTickets":
-        rawVal = ticketsLoading ? undefined : tickets.length;
+        rawVal = ticketsLoading ? (isDemo ? 9 : undefined) : (tickets.length || (isDemo ? 9 : 0));
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       default:
         return stat;
@@ -1201,6 +1265,10 @@ const Dashboard = () => {
       setTicketsError(false);
     }
   }, [dashboardTickets]);
+
+  const displayLeads = (leads && leads.length > 0) ? leads : (isDemo ? DEMO_LEADS_DATA : []);
+  const displayQuotations = (recentQuotations && recentQuotations.length > 0) ? recentQuotations : (isDemo ? DEMO_QUOTATIONS_DATA : []);
+  const displayTickets = (tickets && tickets.length > 0) ? tickets : (isDemo ? DEMO_TICKETS_DATA : []);
 
   // Fetch live billing KPIs and the monthly Revenue vs Expenses series.
   // invoiceDate is a Date object — must use toISOString().slice(0,7) not String().slice(0,7).
@@ -1861,7 +1929,7 @@ const Dashboard = () => {
                         </div>
                       </div>
 
-                      {!billingChartData.some(
+                      {!displayBillingData.some(
                         (d) => Number(d.paid) > 0 || Number(d.pending) > 0 || Number(d.overdue) > 0
                       ) ? (
                         <div
@@ -1883,7 +1951,7 @@ const Dashboard = () => {
                         <div style={{ width: "100%", height: "260px" }}>
                           <ResponsiveContainer width="100%" height="100%">
                             <AreaChart
-                              data={billingChartData}
+                              data={displayBillingData}
                               margin={{ top: 15, right: 15, left: -10, bottom: 0 }}
                             >
                               <defs>
@@ -2164,16 +2232,16 @@ const Dashboard = () => {
                       <div className="scrollable-table-wrapper">
                         <table>
                           <tbody>
-                            {leadsLoading ? (
+                            {leadsLoading && !isDemo ? (
                               <TableLoader colSpan={5} minHeight="120px" />
-                            ) : leads.length === 0 ? (
+                            ) : displayLeads.length === 0 ? (
                               <tr>
                                 <td colSpan={5} className="empty-row">
                                   No leads yet — capture one from Leads.
                                 </td>
                               </tr>
                             ) : (
-                              leads.slice(0, 5).map((lead) => (
+                              displayLeads.slice(0, 5).map((lead) => (
                                 <tr key={lead.id || lead._id}>
                                   <td>
                                     <span className="td-id">{lead.leadId || lead.id}</span>
@@ -2227,22 +2295,22 @@ const Dashboard = () => {
                       <div className="scrollable-table-wrapper">
                         <table>
                           <tbody>
-                            {ticketsLoading ? (
+                            {ticketsLoading && !isDemo ? (
                               <TableLoader colSpan={4} minHeight="120px" />
-                            ) : ticketsError ? (
+                            ) : ticketsError && !isDemo ? (
                               <tr>
                                 <td colSpan={4} className="empty-row">
                                   Could not load tickets — check your connection.
                                 </td>
                               </tr>
-                            ) : tickets.length === 0 ? (
+                            ) : displayTickets.length === 0 ? (
                               <tr>
                                 <td colSpan={4} className="empty-row">
                                   No tickets yet — raise one from Support Tickets.
                                 </td>
                               </tr>
                             ) : (
-                              tickets.slice(0, 5).map((ticket) => (
+                              displayTickets.slice(0, 5).map((ticket) => (
                                 <tr key={ticket._id || ticket.id}>
                                   <td>
                                     <span className="td-id">
@@ -2307,37 +2375,37 @@ const Dashboard = () => {
                       <div className="scrollable-table-wrapper">
                         <table>
                           <tbody>
-                            {quotationsLoading && recentQuotations.length === 0 ? (
+                            {quotationsLoading && recentQuotations.length === 0 && !isDemo ? (
                               <tr>
                                 <td colSpan={5} className="empty-row">
                                   Loading quotations…
                                 </td>
                               </tr>
-                            ) : quotationsError ? (
+                            ) : quotationsError && !isDemo ? (
                               <tr>
                                 <td colSpan={5} className="empty-row">
                                   Could not load quotations — check your connection.
                                 </td>
                               </tr>
-                            ) : recentQuotations.length === 0 ? (
+                            ) : displayQuotations.length === 0 ? (
                               <tr>
                                 <td colSpan={5} className="empty-row">
                                   No quotations yet — create one from Quotations.
                                 </td>
                               </tr>
                             ) : (
-                              recentQuotations.map((q, i) => (
+                              displayQuotations.map((q, i) => (
                                 <tr key={q._id || q.id || i}>
                                   <td>
                                     <span className="td-id">
-                                      {q.quotationId ||
+                                      {q.quotationId || q.id ||
                                         `Q-${String(q._id).slice(-4).toUpperCase()}`}
                                     </span>
                                   </td>
-                                  <td className="td-name" title={q.client}>
-                                    <div className="td-name-text">{q.client}</div>
+                                  <td className="td-name" title={q.client || q.customerName}>
+                                    <div className="td-name-text">{q.client || q.customerName}</div>
                                   </td>
-                                  <td className="td-value">{formatINR(q.grandTotal || q.total)}</td>
+                                  <td className="td-value">{formatINR(q.grandTotal || q.total || q.amount)}</td>
                                   <td className="td-center">
                                     <span
                                       className={`status-badge ${QUOTATION_STATUS_CLASS[q.status] || "status-pending"}`}
