@@ -803,21 +803,20 @@ const Dashboard = () => {
 
   // Radar axes (Total + status breakdown) — live status counts from installationAPI.getStats().
   const installationRadar = useMemo(() => {
-    const total = Number(installationStats?.total) || 0;
-    if (total > 0 || !isDemo) {
+    if (isDemo) {
       return [
-        { axis: "Total", name: "Total", value: total },
-        { axis: "Completed", name: "Completed", value: Number(installationStats?.completed) || 0 },
-        { axis: "In Progress", name: "In Progress", value: Number(installationStats?.inProgress) || 0 },
-        { axis: "Pending", name: "Pending", value: Number(installationStats?.pending) || 0 },
+        { axis: "Total", name: "Total", value: 38 },
+        { axis: "Completed", name: "Completed", value: 24 },
+        { axis: "In Progress", name: "In Progress", value: 9 },
+        { axis: "Pending", name: "Pending", value: 5 },
       ];
     }
-    // ONLY in Explore Demo: Fulfill with realistic installation pipeline
+    const total = Number(installationStats?.total) || 0;
     return [
-      { axis: "Total", name: "Total", value: 38 },
-      { axis: "Completed", name: "Completed", value: 24 },
-      { axis: "In Progress", name: "In Progress", value: 9 },
-      { axis: "Pending", name: "Pending", value: 5 },
+      { axis: "Total", name: "Total", value: total },
+      { axis: "Completed", name: "Completed", value: Number(installationStats?.completed) || 0 },
+      { axis: "In Progress", name: "In Progress", value: Number(installationStats?.inProgress) || 0 },
+      { axis: "Pending", name: "Pending", value: Number(installationStats?.pending) || 0 },
     ];
   }, [installationStats, isDemo]);
 
@@ -897,10 +896,8 @@ const Dashboard = () => {
   const roleBaseStats = roleStats[user?.role] || roleStats[ROLES.COMPANY_ADMIN];
 
   const displayLeadSources = useMemo(() => {
-    const hasData = (leadSources || []).some((ls) => Number(ls.value) > 0);
-    if (hasData) return leadSources;
     if (isDemo) {
-      // ONLY in Explore Demo: Fulfill with realistic CRM source distribution
+      // In Explore Demo: Fulfill with rich, balanced CRM distribution
       return [
         { name: "Website Direct", value: 38 },
         { name: "Partner Referral", value: 26 },
@@ -908,6 +905,8 @@ const Dashboard = () => {
         { name: "Social & Events", value: 16 },
       ];
     }
+    const hasData = (leadSources || []).some((ls) => Number(ls.value) > 0);
+    if (hasData) return leadSources;
     return [];
   }, [leadSources, isDemo]);
 
@@ -915,10 +914,6 @@ const Dashboard = () => {
 
   // Billing Status dataset — fulfilled with rich analytics in Explore Demo, actual DB data in Admin mode
   const displayBillingData = useMemo(() => {
-    const hasData = (billingChartData || []).some(
-      (d) => Number(d.paid) > 0 || Number(d.pending) > 0 || Number(d.overdue) > 0
-    );
-    if (hasData) return billingChartData;
     if (isDemo) {
       const buckets = lastMonthsBuckets(chartRange);
       const demoPaid = [380000, 450000, 520000, 490000, 610000, 720000];
@@ -932,6 +927,10 @@ const Dashboard = () => {
         overdue: demoOverdue[idx % demoOverdue.length],
       }));
     }
+    const hasData = (billingChartData || []).some(
+      (d) => Number(d.paid) > 0 || Number(d.pending) > 0 || Number(d.overdue) > 0
+    );
+    if (hasData) return billingChartData;
     return billingChartData;
   }, [billingChartData, chartRange, isDemo]);
 
@@ -1008,9 +1007,22 @@ const Dashboard = () => {
     };
   }, [solarAssetValuationData]);
 
-  // Solar PV Energy Monitoring & Generation Yield dataset (100% strictly actual MongoDB data)
+  // Solar PV Energy Monitoring & Generation Yield dataset (100% strictly actual MongoDB data in admin, rich curves in demo)
   const monitoringChartData = useMemo(() => {
     const buckets = lastMonthsBuckets(chartRange);
+
+    if (isDemo) {
+      const baseline = [1850, 2120, 2480, 2890, 3150, 2760, 2340, 2100, 1980, 1820, 1690, 1540];
+      return buckets.map((b, idx) => {
+        const gen = baseline[idx % baseline.length];
+        return {
+          month: b.label,
+          generation: gen,
+          consumption: Math.round(gen * 0.48),
+        };
+      });
+    }
+
     const genMap = {};
     const consMap = {};
 
@@ -1024,29 +1036,11 @@ const Dashboard = () => {
       consMap[key] = (consMap[key] || 0) + kwhCons;
     });
 
-    const data = buckets.map((b) => {
-      return {
-        month: b.label,
-        generation: genMap[b.key] || 0,
-        consumption: consMap[b.key] || 0,
-      };
-    });
-
-    // Dynamic solar yield fallback ensures rich chart curves appear in Explore Demo
-    const hasYield = data.some((d) => d.generation > 0);
-    if (!hasYield && isDemo) {
-      const baseline = [1850, 2120, 2480, 2890, 3150, 2760, 2340, 2100, 1980, 1820, 1690, 1540];
-      return buckets.map((b, idx) => {
-        const gen = baseline[idx % baseline.length];
-        return {
-          month: b.label,
-          generation: gen,
-          consumption: Math.round(gen * 0.48),
-        };
-      });
-    }
-
-    return data;
+    return buckets.map((b) => ({
+      month: b.label,
+      generation: genMap[b.key] || 0,
+      consumption: consMap[b.key] || 0,
+    }));
   }, [rawInstallationsList, chartRange, isDemo]);
 
   const monitoringTotals = useMemo(() => {
@@ -1081,31 +1075,31 @@ const Dashboard = () => {
     let rawVal = undefined;
     switch (stat.key) {
       case "totalLeads":
-        rawVal = counts.totalLeads > 0 ? counts.totalLeads : (isDemo ? 42 : counts.totalLeads ?? 0);
+        rawVal = isDemo ? 42 : (counts.totalLeads ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "activeCustomers":
-        rawVal = counts.activeCustomers > 0 ? counts.activeCustomers : (isDemo ? 28 : counts.activeCustomers ?? 0);
+        rawVal = isDemo ? 28 : (counts.activeCustomers ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "totalInstallations":
-        rawVal = counts.totalInstallations > 0 ? counts.totalInstallations : (isDemo ? 38 : counts.totalInstallations ?? 0);
+        rawVal = isDemo ? 38 : (counts.totalInstallations ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "pipelineValue":
-        rawVal = counts.pipelineValue > 0 ? counts.pipelineValue : (isDemo ? 14800000 : counts.pipelineValue ?? 0);
+        rawVal = isDemo ? 14800000 : (counts.pipelineValue || 0);
         return { ...stat, value: rawVal !== undefined ? formatINR(rawVal) : undefined };
       case "pendingQuotes":
-        rawVal = counts.pendingQuotes > 0 ? counts.pendingQuotes : (isDemo ? 9 : counts.pendingQuotes ?? 0);
+        rawVal = isDemo ? 9 : (counts.pendingQuotes ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "inventoryItems":
-        rawVal = counts.inventoryItems > 0 ? counts.inventoryItems : (isDemo ? 120 : counts.inventoryItems ?? 0);
+        rawVal = isDemo ? 120 : (counts.inventoryItems ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "assignedJobs":
-        rawVal = counts.assignedJobs > 0 ? counts.assignedJobs : (isDemo ? 14 : counts.assignedJobs ?? 0);
+        rawVal = isDemo ? 14 : (counts.assignedJobs ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "maintenanceDue":
-        rawVal = counts.maintenanceDue > 0 ? counts.maintenanceDue : (isDemo ? 3 : counts.maintenanceDue ?? 0);
+        rawVal = isDemo ? 3 : (counts.maintenanceDue ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "warrantyActive":
-        rawVal = counts.warrantyActive > 0 ? counts.warrantyActive : (isDemo ? 26 : counts.warrantyActive ?? 0);
+        rawVal = isDemo ? 26 : (counts.warrantyActive ?? 0);
         return { ...stat, value: rawVal !== undefined ? Number(rawVal).toLocaleString() : undefined };
       case "revenue":
         rawVal = billingStats?.totalInvoiced || billingTotals.paid || (isDemo ? 6450000 : 0);
@@ -1270,9 +1264,9 @@ const Dashboard = () => {
     }
   }, [dashboardTickets]);
 
-  const displayLeads = (leads && leads.length > 0) ? leads : (isDemo ? DEMO_LEADS_DATA : []);
-  const displayQuotations = (recentQuotations && recentQuotations.length > 0) ? recentQuotations : (isDemo ? DEMO_QUOTATIONS_DATA : []);
-  const displayTickets = (tickets && tickets.length > 0) ? tickets : (isDemo ? DEMO_TICKETS_DATA : []);
+  const displayLeads = isDemo ? DEMO_LEADS_DATA : ((leads && leads.length > 0) ? leads : []);
+  const displayQuotations = isDemo ? DEMO_QUOTATIONS_DATA : ((recentQuotations && recentQuotations.length > 0) ? recentQuotations : []);
+  const displayTickets = isDemo ? DEMO_TICKETS_DATA : ((tickets && tickets.length > 0) ? tickets : []);
 
   // Fetch live billing KPIs and the monthly Revenue vs Expenses series.
   // invoiceDate is a Date object — must use toISOString().slice(0,7) not String().slice(0,7).
