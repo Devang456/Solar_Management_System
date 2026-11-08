@@ -2217,6 +2217,13 @@ const Dashboard = () => {
                     </div>
                     <div className="table-wrapper">
                       <table className="dash-header-table">
+                        <colgroup>
+                          <col style={{ width: "17%" }} />
+                          <col style={{ width: "27%" }} />
+                          <col style={{ width: "18%" }} />
+                          <col style={{ width: "19%" }} />
+                          <col style={{ width: "19%" }} />
+                        </colgroup>
                         <thead>
                           <tr>
                             <th className="td-center">#</th>
@@ -2229,6 +2236,13 @@ const Dashboard = () => {
                       </table>
                       <div className="scrollable-table-wrapper">
                         <table>
+                          <colgroup>
+                            <col style={{ width: "17%" }} />
+                            <col style={{ width: "27%" }} />
+                            <col style={{ width: "18%" }} />
+                            <col style={{ width: "19%" }} />
+                            <col style={{ width: "19%" }} />
+                          </colgroup>
                           <tbody>
                             {leadsLoading && !isDemo ? (
                               <TableLoader colSpan={5} minHeight="120px" />
@@ -2360,6 +2374,13 @@ const Dashboard = () => {
                     </div>
                     <div className="table-wrapper">
                       <table className="dash-header-table">
+                        <colgroup>
+                          <col style={{ width: "17%" }} />
+                          <col style={{ width: "27%" }} />
+                          <col style={{ width: "18%" }} />
+                          <col style={{ width: "19%" }} />
+                          <col style={{ width: "19%" }} />
+                        </colgroup>
                         <thead>
                           <tr>
                             <th className="td-center">#</th>
@@ -2372,6 +2393,13 @@ const Dashboard = () => {
                       </table>
                       <div className="scrollable-table-wrapper">
                         <table>
+                          <colgroup>
+                            <col style={{ width: "17%" }} />
+                            <col style={{ width: "27%" }} />
+                            <col style={{ width: "18%" }} />
+                            <col style={{ width: "19%" }} />
+                            <col style={{ width: "19%" }} />
+                          </colgroup>
                           <tbody>
                             {quotationsLoading && recentQuotations.length === 0 && !isDemo ? (
                               <tr>
