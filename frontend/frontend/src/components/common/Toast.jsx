@@ -32,6 +32,16 @@ export function ToastProvider({ children }) {
   const warning = useCallback((msg) => addToast(msg, "warning"), [addToast]);
   const info = useCallback((msg) => addToast(msg, "info"), [addToast]);
 
+  useEffect(() => {
+    const handleCustomToast = (e) => {
+      if (e.detail?.message) {
+        addToast(e.detail.message, e.detail.type || "info", e.detail.duration || 3600);
+      }
+    };
+    window.addEventListener("solar-toast", handleCustomToast);
+    return () => window.removeEventListener("solar-toast", handleCustomToast);
+  }, [addToast]);
+
   return (
     <ToastContext.Provider value={{ toast, success, error, warning, info }}>
       {children}

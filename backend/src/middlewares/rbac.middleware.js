@@ -46,6 +46,19 @@ export const checkPermission = (moduleName, action = "view") => {
                 return next();
             }
 
+            // Demo Viewer role has universal view & export, but is strictly blocked from write/edit/delete mutations
+            if (userRoleKey === "demo_viewer" || userRoleKey === "demo viewer" || req.user.isDemo) {
+                if (action === "view" || action === "export") {
+                    if (!req._grantedPermissions) req._grantedPermissions = new Set();
+                    req._grantedPermissions.add(checkKey);
+                    return next();
+                }
+                return res.status(HTTP_STATUS.FORBIDDEN).json({
+                    success: false,
+                    message: "Demo Mode: Creations, modifications, and deletions are disabled to protect live portfolio data."
+                });
+            }
+
             // Fetch latest user document from DB if available
             let userDoc = null;
             const userId = req.user.userId || req.user.id || req.user._id;

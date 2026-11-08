@@ -1,186 +1,1054 @@
-.login-card {
+/* ==========================================================================
+   SOLAROPS TWO-TAB COMPACT AUTHENTICATION SYSTEM
+   Modern, Ultra-Clean, Zero-Desktop-Scrollbar Architecture
+   ========================================================================== */
+
+:root {
+  --solar-login-bg-deep: #051412;
+  --solar-login-bg-mid: #082420;
+  --solar-login-bg-panel: #0c332e;
+  --solar-login-surface: #ffffff;
+  --solar-login-text-dark: #0f172a;
+  --solar-login-text-muted: #64748b;
+  --solar-login-emerald: #10b981;
+  --solar-login-emerald-dark: #059669;
+  --solar-login-amber: #f59e0b;
+  --solar-login-amber-gold: #fbbf24;
+  --solar-login-cyan: #06b6d4;
+  --solar-login-border: #e2e8f0;
+  --solar-login-focus-ring: rgba(16, 185, 129, 0.22);
+}
+
+/* Base Fullpage Container — Fits 100vh on standard desktop displays */
+.solar-auth-page {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
   width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 48px 40px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  background: #f8fafc;
+  color: var(--solar-login-text-dark);
+  font-family: var(--app-font-family, "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  overflow: hidden;
+  position: relative;
 }
 
-.login-card .card-header {
-  margin-bottom: 32px;
-}
-
-.login-card .card-header h2 {
-  font-size: 26px;
-  font-weight: 700;
-  color: #1a2332;
-  margin-bottom: 6px;
-}
-
-.login-card .card-header p {
-  font-size: 14px;
-  color: #7a8a9a;
-}
-
-.login-form {
+/* ==========================================================================
+   1. LEFT SHOWCASE PANEL (Desktop 50%) — Compact, Balanced
+   ========================================================================== */
+.solar-auth-showcase {
+  flex: 1 1 50%;
+  background: linear-gradient(155deg, #04100e 0%, #082420 45%, #0b3d37 100%);
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  justify-content: center;
+  padding: 40px 48px;
+  color: #ffffff;
+  z-index: 1;
 }
 
-.form-options {
+/* Ambient Glowing Background Orbs */
+.solar-showcase-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.solar-showcase-glow--emerald {
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, #10b981 0%, transparent 70%);
+  top: -60px;
+  left: -60px;
+}
+
+.solar-showcase-glow--amber {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+  bottom: -40px;
+  right: -40px;
+  opacity: 0.2;
+}
+
+/* Subtle Geometric Grid Overlay */
+.solar-showcase-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Inner Showcase Content */
+.solar-showcase-content {
+  position: relative;
+  z-index: 2;
+  max-width: 520px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+}
+
+/* Brand Link */
+.solar-showcase-brand {
+  display: inline-flex;
   align-items: center;
-  font-size: 13px;
+  gap: 12px;
+  text-decoration: none;
+  width: fit-content;
 }
 
-.remember-me {
+.solar-showcase-logo-frame {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
   display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.solar-showcase-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.solar-showcase-brand-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.solar-showcase-brand-badge {
+  font-size: 0.68rem;
+  color: #10b981;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Showcase Hero */
+.solar-showcase-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.solar-showcase-pill {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #6b7280;
-  cursor: pointer;
-}
-
-.remember-me input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  accent-color: #2c5364;
-  cursor: pointer;
-}
-
-.forgot-link {
-  color: #2c5364;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
-.card-footer {
-  margin-top: 28px;
-  text-align: center;
-  font-size: 13px;
-  color: #7a8a9a;
-}
-
-.register-link {
-  color: #2c5364;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  color: #34d399;
+  font-size: 0.74rem;
   font-weight: 600;
-  text-decoration: none;
+  letter-spacing: 0.02em;
+  width: fit-content;
 }
 
-.register-link:hover {
-  text-decoration: underline;
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseDotAnim 2s infinite;
 }
 
-/* ========== DEMO ACCOUNTS ========== */
-.demo-toggle {
-  margin-top: 20px;
-  text-align: center;
+@keyframes pulseDotAnim {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-.demo-btn {
-  background: none;
-  border: 1px dashed #d1d5db;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #6b7280;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+.solar-showcase-headline {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
 }
 
-.demo-btn:hover {
-  border-color: #2c5364;
-  color: #2c5364;
+.solar-gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.demo-list {
-  margin-top: 12px;
+.solar-showcase-desc {
+  font-size: 0.92rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 3 Compact Feature Cards */
+.solar-showcase-features {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: left;
+  gap: 10px;
 }
 
-.demo-item {
+.solar-feature-card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  border: 1px solid #f3f4f6;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.solar-feature-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.solar-feature-icon-box {
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  background: #fafbfc;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.demo-item:hover {
-  background: #f0f4f8;
-  border-color: #d1d5db;
+.solar-feature-icon-box--green {
+  background: rgba(16, 185, 129, 0.16);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.demo-email {
-  font-size: 12px;
-  font-weight: 500;
-  color: #374151;
+.solar-feature-icon-box--amber {
+  background: rgba(245, 158, 11, 0.16);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-.demo-role {
-  font-size: 11px;
+.solar-feature-icon-box--cyan {
+  background: rgba(6, 182, 212, 0.16);
+  color: #06b6d4;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.solar-feature-text {
+  flex: 1;
+}
+
+.solar-feature-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.solar-feature-title-row h4 {
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #2c5364;
-  background: #eef4f8;
-  padding: 2px 8px;
-  border-radius: 4px;
+  color: #f1f5f9;
+  margin: 0;
 }
 
-@media (max-width: 900px) {
-  .login-card {
+.solar-stat-chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.15);
+  padding: 1.5px 6px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+}
+
+.solar-feature-text p {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Showcase Bottom Strip */
+.solar-showcase-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.solar-live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.76rem;
+  color: #cbd5e1;
+}
+
+.live-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.solar-showcase-security-tag {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   2. RIGHT AUTHENTICATION PANEL (Desktop 50%) — Compact, No Scroll
+   ========================================================================== */
+.solar-auth-main {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 36px;
+  background: #f8fafc;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Mobile Header (Hidden on Desktop) */
+.solar-auth-mobile-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 440px;
+  margin-bottom: 16px;
+}
+
+.solar-mobile-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.solar-mobile-brand-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0b3d37;
+}
+
+.solar-mobile-home-btn {
+  font-size: 0.8rem;
+  color: #059669;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+/* Main Auth Card Container */
+.solar-auth-card-container {
+  width: 100%;
+  max-width: 440px;
+  margin: auto 0;
+}
+
+.solar-auth-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 30px 24px;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.07), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+  border: 1px solid #e2e8f0;
+}
+
+/* Top Security & Status Bar */
+.solar-auth-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.solar-badge-portal {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #059669;
+  background: #ecfdf5;
+  padding: 2.5px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.solar-badge-secure {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2.5px 8px;
+  border-radius: 9999px;
+}
+
+/* ==========================================================================
+   3. MODERN TWO-TAB SEGMENTED CONTROL
+   ========================================================================== */
+.solar-auth-tabs-nav {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 22px;
+  border: 1px solid #e2e8f0;
+}
+
+.solar-tab-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  font-family: inherit;
+}
+
+.solar-tab-btn:hover:not(.active) {
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.solar-tab-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.solar-tab-btn.active#tab-demo {
+  color: #065f46;
+}
+
+.solar-tab-icon {
+  color: #f59e0b;
+  font-size: 0.85rem;
+}
+
+.solar-tab-icon-svg {
+  color: #64748b;
+  transition: color 0.15s;
+}
+
+.solar-tab-btn.active .solar-tab-icon-svg {
+  color: #0f172a;
+}
+
+.solar-tab-pill-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #10b981;
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  margin-left: 2px;
+}
+
+/* ==========================================================================
+   4. TAB PANELS (Smooth Transition)
+   ========================================================================== */
+.solar-tab-panel {
+  animation: solarTabFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes solarTabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   TAB 1: EXPLORE DEMO PANEL
+   ========================================================================== */
+.solar-demo-header {
+  margin-bottom: 16px;
+}
+
+.solar-demo-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.solar-recruiter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0b3d37;
+  color: #ffffff;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.solar-demo-instant-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #059669;
+}
+
+.solar-demo-heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.solar-demo-description {
+  font-size: 0.86rem;
+  color: #64748b;
+  line-height: 1.48;
+  margin: 0;
+}
+
+/* Highlights 2x2 Grid */
+.solar-demo-highlights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.solar-demo-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.solar-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+}
+
+/* Primary Demo CTA Button */
+.solar-demo-primary-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #047857 100%);
+  color: #ffffff;
+  font-size: 0.96rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: inherit;
+}
+
+.solar-demo-primary-btn:hover:not(:disabled) {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.42);
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+}
+
+.solar-demo-primary-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.solar-demo-primary-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.solar-demo-subtext {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 12px 0 0;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   TAB 2: ADMIN LOGIN PANEL
+   ========================================================================== */
+.solar-admin-header {
+  margin-bottom: 16px;
+}
+
+.solar-auth-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+}
+
+.solar-auth-subtitle {
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.solar-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.solar-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.solar-input-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.solar-password-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.req-star {
+  color: #ef4444;
+}
+
+.solar-forgot-link {
+  font-size: 0.78rem;
+  color: #059669;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+.solar-forgot-link:hover {
+  color: #047857;
+  text-decoration: underline;
+}
+
+.solar-input-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 12px;
+  height: 42px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.solar-input-box:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.solar-input-box.has-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.solar-input-icon {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.solar-input-field {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.88rem;
+  color: #0f172a;
+  font-family: inherit;
+  width: 100%;
+}
+
+.solar-input-field::placeholder {
+  color: #94a3b8;
+  font-size: 0.84rem;
+}
+
+.solar-password-toggle-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.solar-password-toggle-btn:hover {
+  color: #334155;
+}
+
+.solar-input-error-msg {
+  font-size: 0.74rem;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Remember Me Checkbox */
+.solar-form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.solar-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  color: #475569;
+  cursor: pointer;
+}
+
+.solar-checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: #059669;
+  cursor: pointer;
+}
+
+/* Standard Sign In Button */
+.solar-signin-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border: 1px solid #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.1);
+  font-family: inherit;
+}
+
+.solar-signin-btn:hover:not(:disabled) {
+  background: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.16);
+}
+
+.solar-signin-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.solar-signin-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+/* Loading Spinners */
+.solar-btn-label-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.solar-btn-loading-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.solar-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spinAnim 0.7s linear infinite;
+}
+
+@keyframes spinAnim {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   5. CARD FOOTER
+   ========================================================================== */
+.solar-auth-card-footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.solar-back-home-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #059669;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.solar-back-home-link:hover {
+  color: #047857;
+  text-decoration: underline;
+}
+
+.solar-auth-footnote {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE BREAKPOINTS (320px to 1920px)
+   ========================================================================== */
+
+/* Large Desktop (1440px - 1920px) */
+@media (min-width: 1440px) {
+  .solar-auth-showcase {
+    padding: 60px 64px;
+  }
+  .solar-showcase-content {
+    max-width: 560px;
+  }
+  .solar-showcase-headline {
+    font-size: 2.35rem;
+  }
+  .solar-auth-card {
+    padding: 34px 36px 28px;
+  }
+}
+
+/* Medium Desktop (1025px - 1366px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .solar-auth-showcase {
+    padding: 32px 36px;
+  }
+  .solar-showcase-content {
+    gap: 16px;
+  }
+  .solar-showcase-headline {
+    font-size: 1.85rem;
+  }
+  .solar-auth-main {
+    padding: 20px 24px;
+  }
+}
+
+/* Viewport height safety: On short viewports (<680px), allow natural vertical scroll */
+@media (max-height: 680px) {
+  .solar-auth-page {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+  .solar-auth-main {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+  .solar-auth-page {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+  .solar-auth-showcase {
     padding: 36px 28px;
   }
-}
-
-@media (max-width: 480px) {
-  .login-card {
-    padding: 24px 18px;
-    border-radius: 12px;
+  .solar-showcase-headline {
+    font-size: 1.75rem;
   }
-
-  .login-card .card-header {
-    margin-bottom: 22px;
+  .solar-auth-main {
+    height: auto;
+    min-height: 100vh;
+    padding: 32px 24px;
   }
-
-  .login-card .card-header h2 {
-    font-size: 22px;
-  }
-
-  .form-options {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .demo-item {
-    padding: 6px 10px;
-  }
-
-  .demo-email {
-    font-size: 11px;
+  .solar-auth-card {
+    padding: 24px 22px;
   }
 }
 
-@media (max-width: 360px) {
-  .login-card {
-    padding: 20px 14px;
+/* Mobile & Small Tablets (<= 768px) */
+@media (max-width: 768px) {
+  .solar-auth-page {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
   }
 
-  .login-card .card-header h2 {
-    font-size: 20px;
+  .solar-auth-showcase {
+    flex: none;
+    padding: 28px 18px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .solar-showcase-content {
+    gap: 14px;
+  }
+
+  .solar-showcase-headline {
+    font-size: 1.55rem;
+  }
+
+  .solar-showcase-desc {
+    font-size: 0.85rem;
+  }
+
+  .solar-showcase-features {
+    display: none; /* Keep mobile view compact */
+  }
+
+  .solar-showcase-footer {
+    display: none;
+  }
+
+  .solar-auth-main {
+    flex: 1;
+    height: auto;
+    min-height: auto;
+    padding: 20px 14px 36px;
+    background: #f8fafc;
+  }
+
+  .solar-auth-card-container {
+    max-width: 100%;
+  }
+
+  .solar-auth-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  }
+
+  .solar-demo-highlights-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+/* Small Mobile Screens (320px - 390px) */
+@media (max-width: 390px) {
+  .solar-auth-showcase {
+    padding: 22px 14px 20px;
+  }
+
+  .solar-showcase-headline {
+    font-size: 1.35rem;
+  }
+
+  .solar-auth-card {
+    padding: 16px 12px;
+  }
+
+  .solar-tab-btn {
+    padding: 7px 8px;
+    font-size: 0.8rem;
+  }
+
+  .solar-tab-pill-badge {
+    display: none; /* Hide extra badge on tiny mobile screens */
+  }
+
+  .solar-demo-heading,
+  .solar-auth-title {
+    font-size: 1.2rem;
+  }
+
+  .solar-demo-primary-btn,
+  .solar-signin-btn {
+    padding: 10px 14px;
+    font-size: 0.88rem;
+  }
+
+  .solar-input-box {
+    height: 38px;
   }
 }

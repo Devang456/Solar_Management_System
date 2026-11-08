@@ -65,9 +65,38 @@ export const clearAuthCookies = (res) => {
     res.clearCookie("refreshToken", options);
 };
 
+const DEMO_MODULES = [
+    "dashboard", "leads", "customers", "quotations", "site-survey",
+    "solar-design", "project-approval", "installations", "technicians",
+    "testing", "daily-progress", "products", "inventory", "vendors",
+    "warehouses", "solar-monitoring", "alerts", "maintenance", "tickets",
+    "amc", "warranty", "billing", "payments", "subsidy", "documents",
+    "users", "role-permissions", "reports", "sales-reports", "project-reports",
+    "inventory-reports", "technician-reports", "project-progress", "commissioning",
+    "attendance", "task-assignment", "team-schedule", "settings", "activity-logs",
+    "follow-ups"
+];
+
+export const getDemoPermissionsMap = () => {
+    const perms = {};
+    for (const mod of DEMO_MODULES) {
+        perms[mod] = {
+            view: true,
+            create: true,
+            edit: true,
+            delete: false,
+            export: true
+        };
+    }
+    return perms;
+};
+
 const getRolePermissionsMap = async (roleName) => {
     try {
         const query = roleName || "super_admin";
+        if (query === "demo_viewer" || query === "demo viewer" || query === "demo") {
+            return { roleLabel: "Recruiter Demo", permissions: getDemoPermissionsMap() };
+        }
         let roleDoc = null;
         if (mongoose.isValidObjectId(query)) {
             roleDoc = await Role.findById(query);
@@ -233,6 +262,134 @@ export const UserLogin = async (req, res) => {
         });
     }
 };
+
+//#region DemoLogin
+/**
+ * One-Click Recruiter Demo Login Controller.
+ * Authenticates portfolio evaluators without exposing production administrator credentials.
+ * Provisions an isolated demo user with role "demo_viewer" (read-only for all 28 modules).
+ */
+export const DemoLogin = async (req, res) => {
+    try {
+        const demoEmail = (process.env.DEMO_EMAIL || "demo@solarops.io").trim().toLowerCase();
+        const demoUsername = (process.env.DEMO_USERNAME || "demo_recruiter").trim().toLowerCase();
+
+        let demoUser = await User.findOne({
+            $or: [{ email: demoEmail }, { username: demoUsername }]
+        });
+
+        if (!demoUser) {
+            // Auto-provision demo account with cryptographically random password
+            const randomPassword = crypto.randomBytes(32).toString("hex");
+            const hashedPassword = await bcrypt.hash(randomPassword, 10);
+            demoUser = await User.create({
+                name: "Portfolio Evaluator",
+                username: demoUsername,
+                email: demoEmail,
+                password: hashedPassword,
+                phone: "+91 98765 00000",
+                role: "demo_viewer",
+                department: "portfolio_demo",
+                designation: "Recruiter / Evaluator",
+                employeeId: "DEMO-001",
+                status: "active",
+                bio: "Automated exploration account for developer portfolio visitors."
+            });
+        } else {
+            let needsSave = false;
+            if (demoUser.status !== "active") {
+                demoUser.status = "active";
+                needsSave = true;
+            }
+            if (demoUser.role !== "demo_viewer") {
+                demoUser.role = "demo_viewer";
+                needsSave = true;
+            }
+            if (needsSave) {
+                await demoUser.save({ validateBeforeSave: false });
+            }
+        }
+
+        // Update last login
+        demoUser.lastLogin = new Date();
+        await demoUser.save({ validateBeforeSave: false });
+
+        // Record Activity Log
+        try {
+            await UserActivity.create({
+                userId: String(demoUser._id),
+                user: demoUser.name || "Portfolio Evaluator",
+                action: "Login",
+                detail: "Signed in via One-Click Recruiter Demo Access",
+                device: req.headers["user-agent"] || "Web Browser"
+            });
+        } catch (actErr) {
+            console.warn("Failed to create demo login activity log:", actErr.message);
+        }
+
+        // Fetch demo permissions map (read-only across all 28 modules)
+        const { roleLabel, permissions } = await getRolePermissionsMap("demo_viewer");
+
+        // Generate JWT Tokens
+        const jwtSecret = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
+        const jwtExpire = getJwtExpire();
+        const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET || DEFAULT_JWT_REFRESH_SECRET;
+        const jwtRefreshExpire = getJwtRefreshExpire();
+
+        const token = jwt.sign(
+            {
+                userId: demoUser._id,
+                email: demoUser.email,
+                role: "demo_viewer",
+                isDemo: true,
+                tokenVersion: demoUser.tokenVersion || 0
+            },
+            jwtSecret,
+            { expiresIn: jwtExpire }
+        );
+
+        const refreshToken = jwt.sign(
+            {
+                userId: demoUser._id,
+                email: demoUser.email,
+                isDemo: true,
+                tokenVersion: demoUser.tokenVersion || 0
+            },
+            jwtRefreshSecret,
+            { expiresIn: jwtRefreshExpire }
+        );
+
+        // Set HttpOnly auth cookies
+        setAuthCookies(res, token, refreshToken);
+
+        return res.status(HTTP_STATUS.OK).json({
+            success: true,
+            message: "Welcome to SolarOps! Authenticated successfully with recruiter exploration access.",
+            token,
+            refreshToken,
+            user: {
+                _id: demoUser._id,
+                name: demoUser.name,
+                email: demoUser.email,
+                username: demoUser.username || "demo_recruiter",
+                role: "demo_viewer",
+                roleLabel: roleLabel || "Recruiter Demo",
+                isDemo: true,
+                phone: demoUser.phone || "",
+                department: "portfolio_demo",
+                permissions: permissions || getDemoPermissionsMap(),
+                photo: null
+            }
+        });
+    } catch (error) {
+        console.error("Demo login error:", error);
+        return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Demo authentication service temporarily unavailable. Please try again."
+        });
+    }
+};
+//#endregion
 
 export const refreshUserToken = async (req, res) => {
     try {
@@ -513,6 +670,12 @@ export const ResetPassword = async (req, res) => {
 //#region ChangePassword
 export const ChangePassword = async (req, res) => {
     try {
+        if (req.user?.role === "demo_viewer" || req.user?.isDemo) {
+            return res.status(HTTP_STATUS.FORBIDDEN).json({
+                success: false,
+                message: "Demo Mode: Password changes are disabled for the portfolio demo account."
+            });
+        }
         const userId = req.user.userId;
         const { currentPassword, newPassword, confirmPassword } = req.body || {};
 
@@ -577,6 +740,12 @@ export const ChangePassword = async (req, res) => {
 //#region UpdateProfile
 export const UpdateProfile = async (req, res) => {
     try {
+        if (req.user?.role === "demo_viewer" || req.user?.isDemo) {
+            return res.status(HTTP_STATUS.FORBIDDEN).json({
+                success: false,
+                message: "Demo Mode: Profile editing is disabled for the portfolio demo account."
+            });
+        }
         const { name, phone, department, location, bio, photo } = req.body || {};
 
         const user = await User.findById(req.user.userId);
@@ -664,6 +833,12 @@ export const UploadProfilePhoto = async (req, res) => {
 //#region RemoveProfilePhoto
 export const RemoveProfilePhoto = async (req, res) => {
     try {
+        if (req.user?.role === "demo_viewer" || req.user?.isDemo) {
+            return res.status(HTTP_STATUS.FORBIDDEN).json({
+                success: false,
+                message: "Demo Mode: Profile photo removal is disabled for the portfolio demo account."
+            });
+        }
         const user = await User.findById(req.user.userId);
         if (!user) {
             return res.status(HTTP_STATUS.NOT_FOUND).json({

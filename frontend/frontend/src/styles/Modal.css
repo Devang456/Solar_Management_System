@@ -193,3 +193,53 @@
     width: 100% !important;
   }
 }
+
+/* ==========================================================================
+   Recruiter Demo Mode - Interactive Exploration & Safe Read-Only Styling
+   Allows visitors to open modals, see inputs and explore UI, while disabling
+   save/mutation actions to preserve live portfolio data.
+   ========================================================================== */
+body.demo-mode-active form button[type="submit"]:not(.demo-auth-btn),
+body.demo-mode-active button.lm-save-btn,
+body.demo-mode-active button.vf-btn-primary,
+body.demo-mode-active button.dp-btn-primary,
+body.demo-mode-active button.ch-btn-primary,
+body.demo-mode-active button.pp-btn-primary,
+body.demo-mode-active button.tm-btn-primary,
+body.demo-mode-active button.ts-btn--primary,
+body.demo-mode-active button.cm-btn-primary,
+body.demo-mode-active button.pa-btn-approve,
+body.demo-mode-active button.pa-btn-reject,
+body.demo-mode-active button.btn-save,
+body.demo-mode-active button.save-btn,
+body.demo-mode-active button.common-btn-primary[type="submit"] {
+  opacity: 0.62 !important;
+  cursor: not-allowed !important;
+  position: relative;
+}
+
+body.demo-mode-active form button[type="submit"]:hover:not(.demo-auth-btn)::after,
+body.demo-mode-active button.lm-save-btn:hover::after,
+body.demo-mode-active button.vf-btn-primary:hover::after,
+body.demo-mode-active button.dp-btn-primary:hover::after,
+body.demo-mode-active button.ch-btn-primary:hover::after,
+body.demo-mode-active button.pp-btn-primary:hover::after,
+body.demo-mode-active button.tm-btn-primary:hover::after,
+body.demo-mode-active button.ts-btn--primary:hover::after,
+body.demo-mode-active button.common-btn-primary[type="submit"]:hover::after {
+  content: "Disabled in Demo Mode";
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 99999;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}

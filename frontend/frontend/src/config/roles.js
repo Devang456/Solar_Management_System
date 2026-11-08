@@ -7,6 +7,7 @@ export const ROLES = {
   CUSTOMER: "customer",
   ACCOUNTANT: "accountant",
   SUPPORT_TEAM: "support_team",
+  DEMO_VIEWER: "demo_viewer",
 };
 
 export const ROLE_LABELS = {
@@ -17,6 +18,7 @@ export const ROLE_LABELS = {
   [ROLES.CUSTOMER]: "Customer",
   [ROLES.ACCOUNTANT]: "Accountant",
   [ROLES.SUPPORT_TEAM]: "Support Team",
+  [ROLES.DEMO_VIEWER]: "Recruiter Demo",
 };
 
 // ─── Module Constants ─────────────────────────────────────────────
@@ -243,6 +245,49 @@ export const DEFAULT_ROLE_PERMISSIONS = {
     [MODULES.DOCUMENTS]:        { view: true,  create: false, edit: false, delete: false, export: false },
     // No User Management access.
     [MODULES.USERS]:            { view: false, create: false, edit: false, delete: false, export: false },
+  },
+
+  [ROLES.DEMO_VIEWER]: {
+    [MODULES.DASHBOARD]:        { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.LEADS]:            { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.CUSTOMERS]:        { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.QUOTATIONS]:       { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SITE_SURVEY]:      { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SOLAR_DESIGN]:     { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.PROJECT_APPROVAL]: { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.INSTALLATIONS]:    { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TECHNICIANS]:      { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TESTING]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.DAILY_PROGRESS]:   { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.PRODUCTS]:         { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.INVENTORY]:        { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.VENDORS]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.WAREHOUSES]:       { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SOLAR_MONITORING]: { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.ALERTS]:           { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.MAINTENANCE]:      { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TICKETS]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.AMC]:              { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.WARRANTY]:         { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.BILLING]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.PAYMENTS]:         { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SUBSIDY]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.DOCUMENTS]:        { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.USERS]:            { view: true, create: true,  edit: true,  delete: false, export: false },
+    [MODULES.ROLE_PERMISSIONS]: { view: true, create: true,  edit: true,  delete: false, export: false },
+    [MODULES.REPORTS]:          { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SALES_REPORTS]:    { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.PROJECT_REPORTS]:  { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.INVENTORY_REPORTS]:{ view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TECHNICIAN_REPORTS]:{ view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.PROJECT_PROGRESS]: { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.COMMISSIONING]:    { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.ATTENDANCE]:       { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TASK_ASSIGNMENT]:  { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.TEAM_SCHEDULE]:    { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.SETTINGS]:         { view: true, create: true,  edit: true,  delete: false, export: false },
+    [MODULES.ACTIVITY_LOGS]:     { view: true, create: true,  edit: true,  delete: false, export: true  },
+    [MODULES.FOLLOW_UPS]:        { view: true, create: true,  edit: true,  delete: false, export: true  },
   },
 };
 

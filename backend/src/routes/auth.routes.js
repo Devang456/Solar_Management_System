@@ -1,6 +1,7 @@
 import express from "express";
 import {
     UserLogin,
+    DemoLogin,
     UserLogout,
     UserProfile,
     UpdateProfile,
@@ -15,7 +16,7 @@ import {
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { createUploadMiddleware } from "../middlewares/upload.middleware.js";
 import validate from "../middlewares/validate.middleware.js";
-import { loginRateLimiter } from "../middlewares/rateLimiter.middleware.js";
+import { loginRateLimiter, demoRateLimiter } from "../middlewares/rateLimiter.middleware.js";
 
 import {
     loginSchema,
@@ -33,6 +34,13 @@ router.post(
     loginRateLimiter,
     validate(loginSchema),
     UserLogin
+);
+
+// One-Click Recruiter Demo Access (Rate limited: 30 requests per 15 minutes per IP)
+router.post(
+    "/demo-login",
+    demoRateLimiter,
+    DemoLogin
 );
 
 router.post(

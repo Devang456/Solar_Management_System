@@ -34,6 +34,46 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Demo Mode Safeguard: Prevent any write/edit/delete mutation API calls from demo account
+    const method = (config.method || "get").toUpperCase();
+    const isMutation = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
+    const url = config.url || "";
+    const isAuthUrl =
+      url.includes("/auth/login") ||
+      url.includes("/auth/demo-login") ||
+      url.includes("/auth/logout") ||
+      url.includes("/auth/refresh-token");
+
+    if (isMutation && !isAuthUrl) {
+      try {
+        const rawUser = localStorage.getItem("solar_user");
+        const u = rawUser ? JSON.parse(rawUser) : null;
+        if (u?.isDemo || u?.role === "demo_viewer") {
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(
+              new CustomEvent("solar-toast", {
+                detail: {
+                  type: "warning",
+                  message: "Demo Mode: Saving changes is disabled to preserve portfolio data.",
+                  duration: 3500,
+                },
+              })
+            );
+          }
+          return Promise.reject({
+            response: {
+              status: 403,
+              data: {
+                success: false,
+                message: "Demo Mode: Saving changes is disabled to preserve portfolio data.",
+              },
+            },
+          });
+        }
+      } catch (_) {}
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -142,6 +182,7 @@ api.interceptors.response.use(
 
 export const authAPI = {
   login: (credentials) => api.post("/auth/login", credentials),
+  demoLogin: () => api.post("/auth/demo-login"),
   logout: () => api.post("/auth/logout"),
   refreshToken: (data) => api.post("/auth/refresh-token", data),
   getMe: () => api.get("/auth/me"),

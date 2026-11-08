@@ -416,3 +416,63 @@
     max-width: calc(100vw - 12px);
   }
 }
+
+/* ========== DEMO BADGE ========== */
+.header-demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #059669;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  animation: demoBadgeGlow 3s ease-in-out infinite alternate;
+}
+
+.demo-dot-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: demoDotPulse 2s infinite;
+}
+
+@keyframes demoDotPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes demoBadgeGlow {
+  0% {
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+  100% {
+    border-color: rgba(16, 185, 129, 0.55);
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.15);
+  }
+}
+
+@media (max-width: 680px) {
+  .header-demo-badge span:not(.demo-dot-pulse) {
+    display: none;
+  }
+  .header-demo-badge {
+    padding: 6px 8px;
+  }
+}

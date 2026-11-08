@@ -170,6 +170,13 @@ const Header = ({ title, onNotificationClick, hideNotifications = false, onToggl
         </div>
         )}
 
+        {(user?.isDemo || user?.role === "demo_viewer") && (
+          <div className="header-demo-badge" title="Portfolio Recruiter Demo Mode — Active exploration session">
+            <span className="demo-dot-pulse" />
+            <span>Recruiter Demo Mode</span>
+          </div>
+        )}
+
         <div className="header-divider"></div>
         <div
           className="header-profile"

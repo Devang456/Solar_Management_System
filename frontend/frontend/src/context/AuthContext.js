@@ -70,6 +70,7 @@ const buildUser = (data = {}) => {
   return {
     ...data,
     role: userRole,
+    isDemo: !!(data.isDemo || userRole === ROLES.DEMO_VIEWER),
     roleLabel: getRoleLabel(userRole),
     permissions: getAccessibleModules(userRole),
     name: data.name || data.email?.split("@")[0] || "Admin",
@@ -305,6 +306,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const demoLogin = async () => {
+    try {
+      const response = await authAPI.demoLogin();
+      const data = response.data;
+      if (!data.success) {
+        return { success: false, message: data.message };
+      } else {
+        if (data.token) {
+          localStorage.setItem("accessToken", data.token);
+        }
+        if (data.refreshToken) {
+          localStorage.setItem("refreshToken", data.refreshToken);
+        }
+        const userData = buildUser(data.user);
+        try {
+          localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
+        } catch {}
+        setUser(userData);
+        setPermissionsReady(true);
+        return { success: true, message: data.message, user: userData };
+      }
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        (error.message === "Network Error"
+          ? "Unable to connect to backend server. Please verify the backend is running."
+          : error.message);
+      return { success: false, message };
+    }
+  };
+
   // Purge legacy localStorage tokens on startup — session is managed via cookies and Bearer tokens
   useEffect(() => {
     try {
@@ -364,9 +396,65 @@ export const AuthProvider = ({ children }) => {
     return getActions(user.role, moduleKey);
   };
 
+  const isDemo = !!(user?.isDemo || user?.role === ROLES.DEMO_VIEWER);
+
+  // Recruiter Demo Mode - Interactive UI safeguards
+  // Enables visitors to freely inspect forms, tabs, inputs and modules
+  // while preventing mutations to protect live portfolio data.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    if (isDemo) {
+      document.body.classList.add("demo-mode-active");
+      document.body.setAttribute("data-demo-mode", "true");
+    } else {
+      document.body.classList.remove("demo-mode-active");
+      document.body.removeAttribute("data-demo-mode");
+    }
+
+    if (!isDemo) return;
+
+    const handleFormSubmit = (e) => {
+      const form = e.target;
+      // Do not block authentication forms (login / password reset)
+      if (
+        form &&
+        (form.classList.contains("login-form") ||
+          form.classList.contains("forgot-form") ||
+          form.closest(".login-card") ||
+          form.closest(".forgot-card"))
+      ) {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+      if (typeof e.stopImmediatePropagation === "function") {
+        e.stopImmediatePropagation();
+      }
+
+      window.dispatchEvent(
+        new CustomEvent("solar-toast", {
+          detail: {
+            type: "warning",
+            message: "Demo Mode: Form inputs are fully interactive for evaluation, but saving is disabled to protect live portfolio data.",
+            duration: 4000,
+          },
+        })
+      );
+    };
+
+    document.addEventListener("submit", handleFormSubmit, true);
+    return () => {
+      document.removeEventListener("submit", handleFormSubmit, true);
+    };
+  }, [isDemo]);
+
   const value = {
     user,
+    isDemo,
     login,
+    demoLogin,
     logout,
     switchRole,
     updateUser,

@@ -18,3 +18,21 @@ export const loginRateLimiter = rateLimit({
         });
     }
 });
+
+/**
+ * Demo Login Rate Limiter Middleware
+ * Allows portfolio evaluators/recruiters comfortable exploration without tripping the strict 5-attempt limit.
+ */
+export const demoRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: process.env.NODE_ENV === "production" ? 30 : 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    validate: { xForwardedForHeader: false },
+    handler: (req, res) => {
+        res.status(429).json({
+            success: false,
+            message: "Too many demo session requests from this IP. Please wait a moment and try again."
+        });
+    }
+});
