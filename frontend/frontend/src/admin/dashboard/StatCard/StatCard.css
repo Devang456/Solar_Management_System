@@ -410,15 +410,15 @@
 .stat-card {
   background: #ffffff !important;
   border-radius: 12px !important;
-  padding: 14px 16px !important;
+  padding: 12px 14px !important;
   border: 1px solid #e2e8f0 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
   display: flex !important;
   align-items: center !important;
-  gap: 14px !important;
+  gap: 12px !important;
   border-top: 3.5px solid #0b3d3a !important;
   transition: all 0.2s ease-in-out !important;
-  min-height: 84px !important;
+  min-height: 80px !important;
   width: 100% !important;
   margin: 0 !important;
   box-sizing: border-box !important;
@@ -442,8 +442,8 @@
 
 /* Icon badge container */
 .stat-icon {
-  width: 44px !important;
-  height: 44px !important;
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 10px !important;
   display: flex !important;
   align-items: center !important;
@@ -452,8 +452,8 @@
 }
 
 .stat-icon svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 19px !important;
+  height: 19px !important;
 }
 
 /* Icon badge colors with soft pastel backgrounds */
@@ -476,22 +476,23 @@
 }
 
 .stat-title {
-  font-size: 11px !important;
+  font-size: 10.5px !important;
   font-weight: 600 !important;
   color: #64748b !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.35px !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 .stat-value {
-  font-size: 22px !important;
+  font-size: clamp(16px, 1.25vw, 20px) !important;
   font-weight: 700 !important;
   color: #0f172a !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
+  letter-spacing: -0.02em !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }

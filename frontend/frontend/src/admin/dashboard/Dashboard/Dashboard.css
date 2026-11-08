@@ -412,45 +412,42 @@
 
 /* ── Recent Leads (table-card-lg): distribute columns with proper alignment ── */
 .dashboard-layout .table-card-lg table th:nth-child(1),
-.dashboard-layout .table-card-lg table td:nth-child(1) { width: 8%; white-space: nowrap; text-align: center; }
+.dashboard-layout .table-card-lg table td:nth-child(1) { width: 14%; white-space: nowrap; text-align: center; }
 
 .dashboard-layout .table-card-lg table th:nth-child(2),
-.dashboard-layout .table-card-lg table td:nth-child(2) { width: 21%; text-align: left; }
+.dashboard-layout .table-card-lg table td:nth-child(2) { width: 32%; text-align: left; }
 
 .dashboard-layout .table-card-lg table th:nth-child(3),
-.dashboard-layout .table-card-lg table td:nth-child(3) { width: 16%; white-space: nowrap; text-align: right; }
+.dashboard-layout .table-card-lg table td:nth-child(3) { width: 20%; white-space: nowrap; text-align: right; }
 
 .dashboard-layout .table-card-lg table th:nth-child(4),
-.dashboard-layout .table-card-lg table td:nth-child(4) { width: 20%; text-align: center; }
+.dashboard-layout .table-card-lg table td:nth-child(4) { width: 18%; text-align: center; }
 
 .dashboard-layout .table-card-lg table th:nth-child(5),
-.dashboard-layout .table-card-lg table td:nth-child(5) { width: 18%; white-space: nowrap; text-align: right; }
+.dashboard-layout .table-card-lg table td:nth-child(5) { width: 16%; white-space: nowrap; text-align: right; }
 
 /* ── Recent Quotations (performers-card): proper alignment ── */
 .dashboard-layout .performers-card table th:nth-child(1),
-.dashboard-layout .performers-card table td:nth-child(1) { width: 7%; white-space: nowrap; text-align: center; }
+.dashboard-layout .performers-card table td:nth-child(1) { width: 14%; white-space: nowrap; text-align: center; }
 
 .dashboard-layout .performers-card table th:nth-child(2),
-.dashboard-layout .performers-card table td:nth-child(2) { width: 24%; text-align: left; }
+.dashboard-layout .performers-card table td:nth-child(2) { width: 32%; text-align: left; }
 
 .dashboard-layout .performers-card table th:nth-child(3),
-.dashboard-layout .performers-card table td:nth-child(3) { width: 9%; text-align: left; }
+.dashboard-layout .performers-card table td:nth-child(3) { width: 20%; white-space: nowrap; text-align: right; }
 
 .dashboard-layout .performers-card table th:nth-child(4),
-.dashboard-layout .performers-card table td:nth-child(4) { width: 17%; white-space: nowrap; text-align: right; }
+.dashboard-layout .performers-card table td:nth-child(4) { width: 18%; text-align: center; }
 
 .dashboard-layout .performers-card table th:nth-child(5),
-.dashboard-layout .performers-card table td:nth-child(5) { width: 18%; text-align: center; }
-
-.dashboard-layout .performers-card table th:nth-child(6),
-.dashboard-layout .performers-card table td:nth-child(6) { width: 12%; white-space: nowrap; text-align: right; }
+.dashboard-layout .performers-card table td:nth-child(5) { width: 16%; white-space: nowrap; text-align: right; }
 
 .dashboard-layout thead th {
   position: sticky;
   top: 0;
   z-index: 10;
   text-align: left;
-  padding: 9px 12px;
+  padding: 9px 10px;
   font-size: 11px;
   font-weight: 700;
   color: var(--dash-ink-muted);
@@ -459,14 +456,16 @@
   background: var(--dash-surface-sunken);
   box-shadow: inset 0 -1px 0 var(--dash-border);
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .dashboard-layout tbody td {
-  padding: 10px 12px;
+  padding: 10px 10px;
   font-size: 12px;
   border-bottom: 1px solid var(--dash-border);
   vertical-align: middle;
   line-height: 1.4;
+  overflow: hidden;
 }
 
 .dashboard-layout tbody tr:last-child td { border-bottom: none; }
@@ -475,12 +474,16 @@
 /* ========== TABLE CELL VARIANTS ========== */
 .dashboard-layout .td-id {
   font-family: var(--font-family);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--dash-pine);
   text-align: center;
   white-space: nowrap;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--dash-surface-sunken);
+  border-radius: 4px;
 }
 
 /* ── Name/Subject cell ── */
