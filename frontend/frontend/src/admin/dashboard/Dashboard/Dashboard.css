@@ -399,16 +399,16 @@
 
 /* ── Support Tickets (table-card-sm): give Subject column more room ── */
 .dashboard-layout .table-card-sm table th:nth-child(1),
-.dashboard-layout .table-card-sm table td:nth-child(1) { width: 12%; white-space: nowrap; text-align: center; }
+.dashboard-layout .table-card-sm table td:nth-child(1) { width: 18%; white-space: nowrap; text-align: center; }
 
 .dashboard-layout .table-card-sm table th:nth-child(2),
-.dashboard-layout .table-card-sm table td:nth-child(2) { width: 46%; text-align: left; }
+.dashboard-layout .table-card-sm table td:nth-child(2) { width: 44%; text-align: left; padding-left: 12px; }
 
 .dashboard-layout .table-card-sm table th:nth-child(3),
-.dashboard-layout .table-card-sm table td:nth-child(3) { width: 21%; text-align: center; }
+.dashboard-layout .table-card-sm table td:nth-child(3) { width: 19%; text-align: center; }
 
 .dashboard-layout .table-card-sm table th:nth-child(4),
-.dashboard-layout .table-card-sm table td:nth-child(4) { width: 21%; text-align: center; }
+.dashboard-layout .table-card-sm table td:nth-child(4) { width: 19%; text-align: center; }
 
 /* ── Recent Leads (table-card-lg): distribute columns with proper alignment ── */
 .dashboard-layout .table-card-lg table th:nth-child(1),

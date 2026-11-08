@@ -753,27 +753,27 @@ const isSameDay = (iso, ref = new Date()) => {
 };
 
 const DEMO_LEADS_DATA = [
-  { id: "LD-2026-104", name: "Apex Logistics Solar Park", value: 3500000, status: "Proposal Sent", createdAt: new Date() },
-  { id: "LD-2026-103", name: "Surat Diamond Mill Rooftop", value: 2400000, status: "Qualified", createdAt: new Date() },
-  { id: "LD-2026-102", name: "Greenfield Cold Storage PV", value: 1800000, status: "Contacted", createdAt: new Date() },
-  { id: "LD-2026-101", name: "Sunshine Residency Society", value: 950000, status: "Interested", createdAt: new Date() },
-  { id: "LD-2026-100", name: "Vibrant Auto Ancillary 40kW", value: 1650000, status: "Follow-up", createdAt: new Date() },
+  { id: "L-104", name: "Apex Logistics Solar Park", value: 3500000, status: "Proposal Sent", createdAt: new Date() },
+  { id: "L-103", name: "Surat Diamond Mill Rooftop", value: 2400000, status: "Qualified", createdAt: new Date() },
+  { id: "L-102", name: "Greenfield Cold Storage PV", value: 1800000, status: "Contacted", createdAt: new Date() },
+  { id: "L-101", name: "Sunshine Residency Society", value: 950000, status: "Interested", createdAt: new Date() },
+  { id: "L-100", name: "Vibrant Auto Ancillary 40kW", value: 1650000, status: "Follow-up", createdAt: new Date() },
 ];
 
 const DEMO_QUOTATIONS_DATA = [
-  { id: "QT-2026-081", client: "Adani Township Solar", amount: 4200000, status: "Sent", createdAt: new Date() },
-  { id: "QT-2026-079", client: "Mahindra Cold Logistics", amount: 2850000, status: "Approved", createdAt: new Date() },
-  { id: "QT-2026-074", client: "Rajkot Engineering Works", amount: 1950000, status: "Sent", createdAt: new Date() },
-  { id: "QT-2026-071", client: "Kiran Gems Industrial Hub", amount: 3100000, status: "Approved", createdAt: new Date() },
-  { id: "QT-2026-068", client: "Silver Oak Educational Campus", amount: 1450000, status: "Draft", createdAt: new Date() },
+  { id: "Q-081", client: "Adani Township Solar", amount: 4200000, status: "Sent", createdAt: new Date() },
+  { id: "Q-079", client: "Mahindra Cold Logistics", amount: 2850000, status: "Approved", createdAt: new Date() },
+  { id: "Q-074", client: "Rajkot Engineering Works", amount: 1950000, status: "Sent", createdAt: new Date() },
+  { id: "Q-071", client: "Kiran Gems Industrial Hub", amount: 3100000, status: "Approved", createdAt: new Date() },
+  { id: "Q-068", client: "Silver Oak Educational Campus", amount: 1450000, status: "Draft", createdAt: new Date() },
 ];
 
 const DEMO_TICKETS_DATA = [
-  { id: "TKT-104", subject: "Inverter Grid Synchronization Alert", priority: "Critical", status: "In Progress" },
-  { id: "TKT-103", subject: "String 4 Disconnect Switch Inspection", priority: "High", status: "Open" },
-  { id: "TKT-102", subject: "Quarterly Panel Washing & Tilt Check", priority: "Medium", status: "In Progress" },
-  { id: "TKT-101", subject: "Net Metering Billing Discrepancy", priority: "Low", status: "Pending" },
-  { id: "TKT-099", subject: "Annual Preventive Maintenance Service", priority: "Medium", status: "Open" },
+  { id: "T-104", subject: "Inverter Grid Synchronization Alert", priority: "Critical", status: "In Progress" },
+  { id: "T-103", subject: "String 4 Disconnect Switch Inspection", priority: "High", status: "Open" },
+  { id: "T-102", subject: "Quarterly Panel Washing & Tilt Check", priority: "Medium", status: "In Progress" },
+  { id: "T-101", subject: "Net Metering Billing Discrepancy", priority: "Low", status: "Pending" },
+  { id: "T-099", subject: "Annual Preventive Maintenance Service", priority: "Medium", status: "Open" },
 ];
 
 const Dashboard = () => {
@@ -2295,6 +2295,12 @@ const Dashboard = () => {
                     </div>
                     <div className="table-wrapper">
                       <table className="dash-header-table">
+                        <colgroup>
+                          <col style={{ width: "18%" }} />
+                          <col style={{ width: "44%" }} />
+                          <col style={{ width: "19%" }} />
+                          <col style={{ width: "19%" }} />
+                        </colgroup>
                         <thead>
                           <tr>
                             <th>#</th>
@@ -2306,6 +2312,12 @@ const Dashboard = () => {
                       </table>
                       <div className="scrollable-table-wrapper">
                         <table>
+                          <colgroup>
+                            <col style={{ width: "18%" }} />
+                            <col style={{ width: "44%" }} />
+                            <col style={{ width: "19%" }} />
+                            <col style={{ width: "19%" }} />
+                          </colgroup>
                           <tbody>
                             {ticketsLoading && !isDemo ? (
                               <TableLoader colSpan={4} minHeight="120px" />
