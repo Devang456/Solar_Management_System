@@ -91,7 +91,8 @@ function downloadRowPDF(r) {
 }
 
 export default function SalesReports() {
-  const { canDo } = useAuth();
+  const { canDo, user } = useAuth();
+  const isDemo = !!(user?.isDemo || user?.role === "demo_viewer");
   const canExport = canDo("sales-reports", "export");
   const { success } = useToast();
   const [search, setSearch] = useState("");
@@ -168,14 +169,17 @@ export default function SalesReports() {
     });
     const entries = Object.entries(map);
     if (entries.length === 0) {
-      return [
-        { month: "Nov 25", revenue: 420000 },
-        { month: "Dec 25", revenue: 580000 },
-        { month: "Jan 26", revenue: 510000 },
-        { month: "Feb 26", revenue: 730000 },
-        { month: "Mar 26", revenue: 890000 },
-        { month: "Apr 26", revenue: 1050000 },
-      ];
+      if (isDemo) {
+        return [
+          { month: "Nov 25", revenue: 420000 },
+          { month: "Dec 25", revenue: 580000 },
+          { month: "Jan 26", revenue: 510000 },
+          { month: "Feb 26", revenue: 730000 },
+          { month: "Mar 26", revenue: 890000 },
+          { month: "Apr 26", revenue: 1050000 },
+        ];
+      }
+      return [];
     }
     return entries
       .sort(([a], [b]) => a.localeCompare(b))
@@ -184,7 +188,7 @@ export default function SalesReports() {
         const label = new Date(y, m - 1).toLocaleString("en", { month: "short", year: "2-digit" });
         return { month: label, revenue };
       });
-  }, [filtered]);
+  }, [filtered, isDemo]);
 
   const statusCountData = useMemo(() => {
     const counts = { paid: 0, pending: 0, overdue: 0 };
@@ -193,14 +197,17 @@ export default function SalesReports() {
     });
     const totalCount = Object.values(counts).reduce((s, c) => s + c, 0);
     if (totalCount === 0) {
-      return [
-        { status: "paid", count: 18 },
-        { status: "pending", count: 7 },
-        { status: "overdue", count: 3 },
-      ];
+      if (isDemo) {
+        return [
+          { status: "paid", count: 18 },
+          { status: "pending", count: 7 },
+          { status: "overdue", count: 3 },
+        ];
+      }
+      return [];
     }
     return Object.entries(counts).map(([status, count]) => ({ status, count }));
-  }, [filtered]);
+  }, [filtered, isDemo]);
 
   return (
     <div className="ss-page">

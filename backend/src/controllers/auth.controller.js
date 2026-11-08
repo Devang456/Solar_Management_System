@@ -519,6 +519,9 @@ export const UserProfile = async (req, res) => {
         const userObj = user.toObject();
         userObj.roleLabel = roleLabel;
         userObj.permissions = permissions;
+        if (user.role === "demo_viewer" || user.email === (process.env.DEMO_EMAIL || "demo@solarops.io")) {
+            userObj.isDemo = true;
+        }
 
         return res.status(HTTP_STATUS.OK).json({
             success: true,

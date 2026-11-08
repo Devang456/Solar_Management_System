@@ -111,7 +111,8 @@ function downloadRowPDF(r) {
 }
 
 export default function InventoryReports() {
-  const { canDo } = useAuth();
+  const { canDo, user } = useAuth();
+  const isDemo = !!(user?.isDemo || user?.role === "demo_viewer");
   const canExport = canDo("inventory-reports", "export");
   const { success } = useToast();
 
@@ -219,28 +220,34 @@ export default function InventoryReports() {
     });
     const vals = Object.values(map);
     if (vals.length === 0) {
-      return [
-        { category: "Panels", stock: 180, minStock: 50 },
-        { category: "Inverters", stock: 65, minStock: 20 },
-        { category: "Batteries", stock: 95, minStock: 30 },
-        { category: "Mounting", stock: 240, minStock: 60 },
-        { category: "Accessories", stock: 150, minStock: 40 },
-        { category: "Wiring", stock: 310, minStock: 80 },
-      ];
+      if (isDemo) {
+        return [
+          { category: "Panels", stock: 180, minStock: 50 },
+          { category: "Inverters", stock: 65, minStock: 20 },
+          { category: "Batteries", stock: 95, minStock: 30 },
+          { category: "Mounting", stock: 240, minStock: 60 },
+          { category: "Accessories", stock: 150, minStock: 40 },
+          { category: "Wiring", stock: 310, minStock: 80 },
+        ];
+      }
+      return [];
     }
     return vals;
-  }, [filtered]);
+  }, [filtered, isDemo]);
 
   const stockHealthPct = useMemo(() => {
     const counts = { "in-stock": 0, "low-stock": 0, "out-of-stock": 0 };
     filtered.forEach((r) => { counts[r.status] = (counts[r.status] || 0) + 1; });
     const total = filtered.length;
     if (total === 0) {
-      return [
-        { key: "in-stock", name: "In Stock", value: 78, fill: STATUS_COLORS["in-stock"] || "#10b981" },
-        { key: "low-stock", name: "Low Stock", value: 16, fill: STATUS_COLORS["low-stock"] || "#f59e0b" },
-        { key: "out-of-stock", name: "Out of Stock", value: 6, fill: STATUS_COLORS["out-of-stock"] || "#ef4444" },
-      ];
+      if (isDemo) {
+        return [
+          { key: "in-stock", name: "In Stock", value: 78, fill: STATUS_COLORS["in-stock"] || "#10b981" },
+          { key: "low-stock", name: "Low Stock", value: 16, fill: STATUS_COLORS["low-stock"] || "#f59e0b" },
+          { key: "out-of-stock", name: "Out of Stock", value: 6, fill: STATUS_COLORS["out-of-stock"] || "#ef4444" },
+        ];
+      }
+      return [];
     }
     return ["in-stock", "low-stock", "out-of-stock"]
       .map((status) => ({
@@ -250,7 +257,7 @@ export default function InventoryReports() {
         fill: STATUS_COLORS[status],
       }))
       .filter((d) => d.value > 0);
-  }, [filtered]);
+  }, [filtered, isDemo]);
 
   return (
     <div className="ss-page">
